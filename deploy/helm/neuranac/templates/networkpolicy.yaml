@@ -1,0 +1,225 @@
+{{- if .Values.networkPolicy.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-api-gateway
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: api-gateway
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: web
+      ports:
+        - port: 8080
+    - from:
+        - namespaceSelector: {}
+      ports:
+        - port: 8080
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: policy-engine
+      ports:
+        - port: 9091
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ai-engine
+      ports:
+        - port: 8081
+    - to:
+        - podSelector: {}
+      ports:
+        - port: 5432
+        - port: 6379
+        - port: 4222
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-radius-server
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: radius-server
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - ports:
+        - port: 1812
+          protocol: UDP
+        - port: 1813
+          protocol: UDP
+        - port: 2083
+          protocol: TCP
+        - port: 49
+          protocol: TCP
+        - port: 9100
+          protocol: TCP
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: policy-engine
+      ports:
+        - port: 9091
+    - to:
+        - podSelector: {}
+      ports:
+        - port: 5432
+        - port: 6379
+        - port: 4222
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ai-engine
+      ports:
+        - port: 8081
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - port: 53
+          protocol: UDP
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-policy-engine
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: policy-engine
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: radius-server
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: api-gateway
+      ports:
+        - port: 9091
+        - port: 8082
+  egress:
+    - to:
+        - podSelector: {}
+      ports:
+        - port: 5432
+        - port: 6379
+        - port: 4222
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - port: 53
+          protocol: UDP
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-database
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: api-gateway
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: radius-server
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: policy-engine
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: ai-engine
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: sync-engine
+      ports:
+        - port: 5432
+{{- if .Values.neuranacBridge.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Release.Name }}-neuranac-bridge
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: neuranac-bridge
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: api-gateway
+      ports:
+        - port: 8090
+  egress:
+    # API Gateway (registration, heartbeat)
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: api-gateway
+      ports:
+        - port: 8080
+    # NATS (cross-site event bridging)
+    - to:
+        - podSelector: {}
+      ports:
+        - port: 4222
+    # External: NeuraNAC ERS/Event Stream ports + peer site HTTPS + gRPC
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              - 10.0.0.0/8
+              - 172.16.0.0/12
+              - 192.168.0.0/16
+      ports:
+        - port: 9060
+          protocol: TCP
+        - port: 8910
+          protocol: TCP
+        - port: 443
+          protocol: TCP
+        - port: 8080
+          protocol: TCP
+        - port: 9090
+          protocol: TCP
+    # DNS
+    - to:
+        - namespaceSelector: {}
+      ports:
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+{{- end }}
+{{- end }}

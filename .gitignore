@@ -1,0 +1,39 @@
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
+artifacts/
+dist/
+build/
+*.egg-info/
+.eggs/
+
+# Private keys and secrets (NEVER commit)
+*.key
+*.pem
+deploy/certs/*.key
+deploy/certs/*.pem
+
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs and temp
+*.log
+tmp/
+temp/

@@ -1,0 +1,550 @@
+services:
+  # ─── Infrastructure ──────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: neuranac-postgres
+    environment:
+      POSTGRES_DB: neuranac
+      POSTGRES_USER: neuranac
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-neuranac_dev_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U neuranac"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: neuranac-redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-neuranac_dev_password} --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-neuranac_dev_password}", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  nats:
+    image: nats:2.10-alpine
+    container_name: neuranac-nats
+    command: >
+      -js
+      -sd /data
+      -m 8222
+      --user ${NATS_USER:-neuranac}
+      --pass ${NATS_PASSWORD:-neuranac_dev_password}
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    volumes:
+      - nats_data:/data
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8222/healthz"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ─── Connection Pooler (opt-in via --profile pooler) ────────────────────
+  pgbouncer:
+    image: bitnami/pgbouncer:1.22.1
+    container_name: neuranac-pgbouncer
+    ports:
+      - "6432:6432"
+    environment:
+      - PGBOUNCER_DATABASE=neuranac
+      - POSTGRESQL_HOST=postgres
+      - POSTGRESQL_PORT=5432
+      - POSTGRESQL_USERNAME=neuranac
+      - POSTGRESQL_PASSWORD=${POSTGRES_PASSWORD:-neuranac_dev_password}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "127.0.0.1", "-p", "6432"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    profiles:
+      - pooler
+
+  # ─── NeuraNAC Services ────────────────────────────────────────────────────────
+  radius-server:
+    build:
+      context: ../services/radius-server
+      dockerfile: Dockerfile
+    container_name: neuranac-radius
+    ports:
+      - "1812:1812/udp"
+      - "1813:1813/udp"
+      - "2083:2083"
+      - "3799:3799/udp"
+      - "49:49"
+      - "9100:9100"
+    environment:
+      - NeuraNAC_ENV=development
+      - NEURANAC_NODE_ID=${NEURANAC_NODE_ID:-twin-a}
+      - NEURANAC_SITE_TYPE=${NEURANAC_SITE_TYPE:-onprem}
+      - NEURANAC_SITE_ID=${NEURANAC_SITE_ID:-00000000-0000-0000-0000-000000000001}
+      - DEPLOYMENT_MODE=${DEPLOYMENT_MODE:-standalone}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=neuranac
+      - POSTGRES_USER=neuranac
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-neuranac_dev_password}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-neuranac_dev_password}
+      - NATS_URL=nats://neuranac:${NATS_PASSWORD:-neuranac_dev_password}@nats:4222
+      - POLICY_ENGINE_GRPC=policy-engine:9091
+      - HEALTH_PORT=9100
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9100/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+
+  api-gateway:
+    build:
+      context: ../services/api-gateway
+      dockerfile: Dockerfile
+    container_name: neuranac-api
+    ports:
+      - "8080:8080"
+    environment:
+      - NeuraNAC_ENV=development
+      - NEURANAC_SITE_TYPE=${NEURANAC_SITE_TYPE:-onprem}
+      - NEURANAC_SITE_ID=${NEURANAC_SITE_ID:-00000000-0000-0000-0000-000000000001}
+      - DEPLOYMENT_MODE=${DEPLOYMENT_MODE:-standalone}
+      - LEGACY_NAC_ENABLED=${LEGACY_NAC_ENABLED:-false}
+      - NEURANAC_PEER_API_URL=${NEURANAC_PEER_API_URL:-}
+      - BRIDGE_CONNECTOR_URL=${BRIDGE_CONNECTOR_URL:-}
+      - FEDERATION_SHARED_SECRET=${FEDERATION_SHARED_SECRET:-}
+      - AI_ENGINE_URL=http://ai-engine:8081
+      - BRIDGE_URL=${BRIDGE_URL:-http://neuranac-bridge:8090}
+      - NEURANAC_BRIDGE_TRUST_ENFORCE=${NEURANAC_BRIDGE_TRUST_ENFORCE:-false}
+      - NEURANAC_CA_KEY_PATH=${NEURANAC_CA_KEY_PATH:-}
+      - NEURANAC_CA_CERT_PATH=${NEURANAC_CA_CERT_PATH:-}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=neuranac
+      - POSTGRES_USER=neuranac
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-neuranac_dev_password}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-neuranac_dev_password}
+      - NATS_URL=nats://neuranac:${NATS_PASSWORD:-neuranac_dev_password}@nats:4222
+      - SECRET_PROVIDER=${SECRET_PROVIDER:-env}
+      - API_SECRET_KEY=${API_SECRET_KEY:-dev_secret_key_change_in_production_min32}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-dev_jwt_secret_key_change_in_production_min64chars_here}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-}
+      - OTEL_SERVICE_NAME=neuranac-api-gateway
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/api/v1/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+
+  policy-engine:
+    build:
+      context: ../services/policy-engine
+      dockerfile: Dockerfile
+    container_name: neuranac-policy
+    ports:
+      - "8082:8082"
+      - "9091:9091"
+    environment:
+      - NeuraNAC_ENV=development
+      - NEURANAC_SITE_TYPE=${NEURANAC_SITE_TYPE:-onprem}
+      - NEURANAC_SITE_ID=${NEURANAC_SITE_ID:-00000000-0000-0000-0000-000000000001}
+      - DEPLOYMENT_MODE=${DEPLOYMENT_MODE:-standalone}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=neuranac
+      - POSTGRES_USER=neuranac
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-neuranac_dev_password}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-neuranac_dev_password}
+      - NATS_URL=nats://neuranac:${NATS_PASSWORD:-neuranac_dev_password}@nats:4222
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-}
+      - OTEL_SERVICE_NAME=neuranac-policy-engine
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8082/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  ai-engine:
+    build:
+      context: ../services/ai-engine
+      dockerfile: Dockerfile
+    container_name: neuranac-ai
+    ports:
+      - "8081:8081"
+    environment:
+      - NeuraNAC_ENV=development
+      - AI_ENGINE_API_KEY=${AI_ENGINE_API_KEY:-neuranac_ai_dev_key_change_in_production}
+      - API_GATEWAY_URL=http://api-gateway:8080
+      - AI_LLM_API_URL=${AI_LLM_API_URL:-http://ollama:11434/api/generate}
+      - AI_LLM_MODEL=${AI_LLM_MODEL:-llama3.1:8b}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=neuranac
+      - POSTGRES_USER=neuranac
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-neuranac_dev_password}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-neuranac_dev_password}
+      - NATS_URL=nats://neuranac:${NATS_PASSWORD:-neuranac_dev_password}@nats:4222
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT:-}
+      - OTEL_SERVICE_NAME=neuranac-ai-engine
+    volumes:
+      - ollama_training:/data/training
+      - ollama_models:/data/models
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8081/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  sync-engine:
+    build:
+      context: ../services/sync-engine
+      dockerfile: Dockerfile
+    container_name: neuranac-sync
+    ports:
+      - "9090:9090"
+      - "9101:9100"
+    environment:
+      - NeuraNAC_ENV=development
+      - NEURANAC_NODE_ID=${NEURANAC_NODE_ID:-twin-a}
+      - NEURANAC_SITE_TYPE=${NEURANAC_SITE_TYPE:-onprem}
+      - NEURANAC_SITE_ID=${NEURANAC_SITE_ID:-00000000-0000-0000-0000-000000000001}
+      - DEPLOYMENT_MODE=${DEPLOYMENT_MODE:-standalone}
+      - SYNC_PEER_ADDRESS=${SYNC_PEER_ADDRESS:-}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=neuranac
+      - POSTGRES_USER=neuranac
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-neuranac_dev_password}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-neuranac_dev_password}
+      - NATS_URL=nats://neuranac:${NATS_PASSWORD:-neuranac_dev_password}@nats:4222
+    depends_on:
+      postgres:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+
+  # ─── NeuraNAC Bridge (runs on every site — pluggable adapter architecture) ──
+  neuranac-bridge:
+    build:
+      context: ../services/neuranac-bridge
+      dockerfile: Dockerfile
+    container_name: neuranac-bridge
+    ports:
+      - "8090:8090"
+    environment:
+      - NEURANAC_BRIDGE_BRIDGE_NAME=${NEURANAC_BRIDGE_NAME:-neuranac-bridge-01}
+      - NEURANAC_BRIDGE_SITE_ID=${NEURANAC_SITE_ID:-00000000-0000-0000-0000-000000000001}
+      - NEURANAC_BRIDGE_TENANT_ID=${NeuraNAC_TENANT_ID:-00000000-0000-0000-0000-000000000000}
+      - NEURANAC_BRIDGE_CLOUD_NeuraNAC_API_URL=http://api-gateway:8080
+      - NEURANAC_BRIDGE_CLOUD_NeuraNAC_WS_URL=ws://api-gateway:8080/api/v1/ws/bridge
+      - NEURANAC_BRIDGE_DEPLOYMENT_MODE=${DEPLOYMENT_MODE:-standalone}
+      - NEURANAC_BRIDGE_SITE_TYPE=${NEURANAC_SITE_TYPE:-onprem}
+      - NEURANAC_BRIDGE_LEGACY_NAC_ENABLED=${LEGACY_NAC_ENABLED:-false}
+      - NEURANAC_BRIDGE_NeuraNAC_HOSTNAME=${NeuraNAC_HOSTNAME:-legacy-nac.local}
+      - NEURANAC_BRIDGE_NeuraNAC_ERS_USERNAME=${NeuraNAC_ERS_USERNAME:-admin}
+      - NEURANAC_BRIDGE_NeuraNAC_ERS_PASSWORD=${NeuraNAC_ERS_PASSWORD:-}
+      - NEURANAC_BRIDGE_PEER_API_URL=${NEURANAC_PEER_API_URL:-}
+      - NEURANAC_BRIDGE_PEER_GRPC_ADDRESS=${SYNC_PEER_ADDRESS:-}
+      - NEURANAC_BRIDGE_NATS_URL=nats://neuranac:${NATS_PASSWORD:-neuranac_dev_password}@nats:4222
+      - NEURANAC_BRIDGE_SIMULATED=${NEURANAC_BRIDGE_SIMULATED:-true}
+      - NEURANAC_BRIDGE_ACTIVATION_CODE=${NEURANAC_BRIDGE_ACTIVATION_CODE:-}
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8090/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+
+  # ─── Network Ingestion Collector ─────────────────────────────────────────
+  ingestion-collector:
+    build:
+      context: ../services/ingestion-collector
+      dockerfile: Dockerfile
+    container_name: neuranac-ingestion
+    ports:
+      - "1162:1162/udp"
+      - "1514:1514/udp"
+      - "2055:2055/udp"
+      - "6767:6767/udp"
+      - "9102:9102"
+    environment:
+      - NeuraNAC_ENV=development
+      - NEURANAC_NODE_ID=${NEURANAC_NODE_ID:-twin-a}
+      - NEURANAC_SITE_TYPE=${NEURANAC_SITE_TYPE:-onprem}
+      - NEURANAC_SITE_ID=${NEURANAC_SITE_ID:-00000000-0000-0000-0000-000000000001}
+      - DEPLOYMENT_MODE=${DEPLOYMENT_MODE:-standalone}
+      - SNMP_TRAP_PORT=1162
+      - SYSLOG_PORT=1514
+      - NETFLOW_PORT=2055
+      - DHCP_SNOOP_PORT=6767
+      - HEALTH_PORT=9102
+      - SNMP_COMMUNITY=${SNMP_COMMUNITY:-public}
+      - SNMP_POLL_INTERVAL=${SNMP_POLL_INTERVAL:-300}
+      - NATS_URL=nats://neuranac:${NATS_PASSWORD:-neuranac_dev_password}@nats:4222
+      - BATCH_SIZE=100
+      - FLUSH_INTERVAL_MS=1000
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9102/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      nats:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ../web
+      dockerfile: Dockerfile
+    container_name: neuranac-web
+    ports:
+      - "${WEB_PORT:-3001}:80"
+    environment:
+      - API_UPSTREAM=http://api-gateway:8080
+    depends_on:
+      - api-gateway
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:80"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ─── Observability ──────────────────────────────────────────────────────
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:0.96.0
+    container_name: neuranac-otel-collector
+    command: ["--config=/etc/otel/config.yaml"]
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+      - "8889:8889"   # Prometheus metrics
+      - "13133:13133" # Health check
+    volumes:
+      - ./otel/otel-collector-config.yaml:/etc/otel/config.yaml:ro
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:13133"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    profiles:
+      - monitoring
+
+  # ─── Monitoring ──────────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.50.0
+    container_name: neuranac-prometheus
+    ports:
+      - "9092:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    profiles:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:10.3.1
+    container_name: neuranac-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-changeme_grafana_admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/provisioning/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml
+      - ./monitoring/grafana-dashboard.json:/var/lib/grafana/dashboards/neuranac-dashboard.json
+    profiles:
+      - monitoring
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:v0.15.0
+    container_name: neuranac-pg-exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://neuranac:${POSTGRES_PASSWORD:-neuranac_dev_password}@postgres:5432/neuranac?sslmode=disable"
+    ports:
+      - "9187:9187"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles:
+      - monitoring
+
+  nats-exporter:
+    image: natsio/prometheus-nats-exporter:0.15.0
+    container_name: neuranac-nats-exporter
+    command: ["-varz", "-connz", "-jsz=all", "http://nats:8222"]
+    ports:
+      - "7777:7777"
+    depends_on:
+      nats:
+        condition: service_healthy
+    profiles:
+      - monitoring
+
+  # ─── Log Aggregation ────────────────────────────────────────────────────
+  loki:
+    image: grafana/loki:2.9.4
+    container_name: neuranac-loki
+    command: -config.file=/etc/loki/config.yaml
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki/loki-config.yaml:/etc/loki/config.yaml:ro
+      - loki_data:/loki
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3100/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    profiles:
+      - monitoring
+
+  promtail:
+    image: grafana/promtail:2.9.4
+    container_name: neuranac-promtail
+    command: -config.file=/etc/promtail/config.yaml
+    volumes:
+      - ./promtail/promtail-config.yaml:/etc/promtail/config.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/log:/var/log:ro
+    depends_on:
+      loki:
+        condition: service_healthy
+    profiles:
+      - monitoring
+
+  # ─── Local LLM (opt-in via --profile llm) ──────────────────────────────
+  ollama:
+    image: ollama/ollama:latest
+    container_name: neuranac-ollama
+    environment:
+      - OLLAMA_INSECURE=true
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./ollama/ca-certificates.crt:/etc/ssl/certs/ca-certificates.crt:ro
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 6G
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+    profiles:
+      - llm
+
+  ollama-init:
+    image: ollama/ollama:latest
+    container_name: neuranac-ollama-init
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "Waiting for Ollama to be ready..."
+        until ollama list 2>/dev/null; do sleep 2; done
+        echo "Pulling model ${AI_LLM_MODEL:-llama3.1:8b}..."
+        ollama pull ${AI_LLM_MODEL:-llama3.1:8b}
+        echo "Model pull complete."
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: "no"
+    profiles:
+      - llm
+
+  # ─── Demo Tools ────────────────────────────────────────────────────────────
+  demo-tools:
+    build:
+      context: ..
+      dockerfile: deploy/demo-tools/Dockerfile
+    container_name: neuranac-demo-tools
+    volumes:
+      - ../tests:/workspace/tests:ro
+      - ../scripts:/workspace/scripts:ro
+      - ../docs:/workspace/docs
+    environment:
+      - NeuraNAC_API_URL=http://api-gateway:8080
+      - NeuraNAC_API_HOST=api-gateway
+      - NeuraNAC_API_PORT=8080
+      - NeuraNAC_RADIUS_HOST=radius-server
+      - NeuraNAC_RADIUS_IP=radius-server
+      - NeuraNAC_WEB_URL=http://web:80
+      - RADIUS_SECRET=testing123
+      - RADIUS_USER=testuser
+      - RADIUS_PASS=testing123
+      - ADMIN_USER=admin
+      - ADMIN_PASS=admin123
+    depends_on:
+      - api-gateway
+      - radius-server
+      - policy-engine
+      - ai-engine
+    profiles:
+      - demo
+
+volumes:
+  postgres_data:
+  redis_data:
+  nats_data:
+  prometheus_data:
+  grafana_data:
+  loki_data:
+  ollama_data:
+  ollama_training:
+  ollama_models:

@@ -1,0 +1,41 @@
+{{- if .Values.podDisruptionBudget.enabled }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Release.Name }}-api-gateway
+  labels:
+    app.kubernetes.io/component: api-gateway
+spec:
+  minAvailable: {{ .Values.podDisruptionBudget.apiGateway.minAvailable | default 1 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api-gateway
+      app.kubernetes.io/instance: {{ .Release.Name }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Release.Name }}-radius-server
+  labels:
+    app.kubernetes.io/component: radius-server
+spec:
+  minAvailable: {{ .Values.podDisruptionBudget.radiusServer.minAvailable | default 1 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: radius-server
+      app.kubernetes.io/instance: {{ .Release.Name }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Release.Name }}-policy-engine
+  labels:
+    app.kubernetes.io/component: policy-engine
+spec:
+  minAvailable: {{ .Values.podDisruptionBudget.policyEngine.minAvailable | default 1 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: policy-engine
+      app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}

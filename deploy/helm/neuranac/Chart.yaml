@@ -1,0 +1,12 @@
+apiVersion: v2
+name: neuranac
+description: NeuraNAC - AI-Aware Hybrid NAC Platform
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - nac
+  - radius
+  - network-access-control
+  - ai
+  - security

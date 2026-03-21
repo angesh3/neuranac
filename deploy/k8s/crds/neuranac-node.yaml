@@ -1,0 +1,120 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: neuranacnodes.neuranac.io
+spec:
+  group: neuranac.io
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                nodeId:
+                  type: string
+                role:
+                  type: string
+                  enum: [primary, secondary, standby]
+                siteType:
+                  type: string
+                  enum: [onprem, cloud]
+                siteId:
+                  type: string
+                  description: UUID of the site in neuranac_sites table
+                deploymentMode:
+                  type: string
+                  enum: [standalone, hybrid]
+                  default: standalone
+                serviceType:
+                  type: string
+                  description: Service this node runs (api-gateway, radius-server, etc.)
+                peerAddress:
+                  type: string
+                syncEnabled:
+                  type: boolean
+                  default: true
+            status:
+              type: object
+              properties:
+                health:
+                  type: string
+                  enum: [healthy, degraded, unreachable, syncing]
+                lastSyncTime:
+                  type: string
+                  format: date-time
+                activeSessions:
+                  type: integer
+                syncLagMs:
+                  type: integer
+      additionalPrinterColumns:
+        - name: Role
+          type: string
+          jsonPath: .spec.role
+        - name: Site
+          type: string
+          jsonPath: .spec.siteType
+        - name: Health
+          type: string
+          jsonPath: .status.health
+        - name: Sessions
+          type: integer
+          jsonPath: .status.activeSessions
+  scope: Namespaced
+  names:
+    plural: neuranacnodes
+    singular: neuranacnode
+    kind: NeuraNACNode
+    shortNames: [neuranacn]
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: neuranactenants.neuranac.io
+spec:
+  group: neuranac.io
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                name:
+                  type: string
+                slug:
+                  type: string
+                isolationMode:
+                  type: string
+                  enum: [row, schema, database]
+                  default: row
+                licenseTier:
+                  type: string
+                  enum: [essentials, advantage, premier]
+                maxEndpoints:
+                  type: integer
+            status:
+              type: object
+              properties:
+                phase:
+                  type: string
+                  enum: [provisioning, active, suspended, deleted]
+                endpointCount:
+                  type: integer
+                lastActivity:
+                  type: string
+                  format: date-time
+  scope: Namespaced
+  names:
+    plural: neuranactenants
+    singular: neuranactenant
+    kind: NeuraNACTenant
+    shortNames: [neuranact]

@@ -1,0 +1,63 @@
+global:
+  nodeId: twin-a
+  siteType: onprem
+  environment: production
+
+radiusServer:
+  replicaCount: 2
+  hostNetwork: true
+  resources:
+    requests: { cpu: 1000m, memory: 1Gi }
+    limits: { cpu: 4000m, memory: 4Gi }
+
+apiGateway:
+  replicaCount: 2
+
+syncEngine:
+  peerAddress: "twin-b.cloud.neuranac.example.com:9090"
+
+postgresql:
+  enabled: true
+  auth:
+    database: neuranac
+    username: neuranac
+    existingSecret: neuranac-db-secret
+  primary:
+    persistence:
+      size: 100Gi
+      storageClass: local-path
+
+redis:
+  enabled: true
+  master:
+    persistence:
+      storageClass: local-path
+
+nats:
+  enabled: true
+  jetstream:
+    fileStorage:
+      storageClassName: local-path
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: neuranac.corp.local
+      paths:
+        - path: /
+          pathType: Prefix
+          service: web
+        - path: /api
+          pathType: Prefix
+          service: api-gateway
+  tls:
+    - secretName: neuranac-onprem-tls
+      hosts: [neuranac.corp.local]
+
+loadBalancer:
+  type: MetalLB
+  annotations:
+    metallb.universe.tf/address-pool: neuranac-pool

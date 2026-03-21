@@ -1,0 +1,35 @@
+# NeuraNAC Sales Demo — Narration Script
+# Format: [[slnc N]] = N ms silence. Lines starting with # are ignored.
+# Starts with functionality, no welcome or demo intro.
+
+# ── Scene 1–2: Intro + Login (silent — ~22 sec to first speech)
+[[slnc 22000]]
+
+# ── Scene 3: AI Mode
+[[slnc 800]]
+AI Mode gives operators a conversational entry point for policy, sessions, and troubleshooting. [[slnc 800]]
+Switching to Dashboard Mode for full operational controls. [[slnc 1200]]
+
+# ── Scene 4: Use Case 1 — AI-Aware NAC
+[[slnc 800]]
+AI-aware NAC governance: govern AI agents as first-class identities, [[slnc 600]]
+track AI data flow, detect shadow AI usage, and enforce policy in one platform. [[slnc 1500]]
+
+# ── Scene 5: Use Case 2 — Hybrid Multi-Site
+[[slnc 800]]
+Hybrid multi-site operations: centralized control across standalone and federated deployments. [[slnc 600]]
+Site topology, node health, and policy intent managed consistently. [[slnc 1200]]
+
+# ── Scene 6: RADIUS Simulator
+[[slnc 800]]
+Simulated RADIUS traffic through the stack. [[slnc 500]]
+Sessions, endpoints, and diagnostics appear in real time. [[slnc 1500]]
+
+# ── Scene 7: Use Case 3 — Real-Time Visibility
+[[slnc 800]]
+Real-time visibility and response: pivot across sessions, [[slnc 600]]
+endpoints, policy context, and audit evidence from one console. [[slnc 1200]]
+
+# ── Scene 8: Close
+[[slnc 800]]
+AI governance, hybrid NAC operations, and live response workflows in one platform. [[slnc 2000]]

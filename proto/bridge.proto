@@ -1,0 +1,91 @@
+syntax = "proto3";
+
+package neuranac.bridge;
+
+option go_package = "github.com/neuranac/proto/bridge";
+
+// BridgeService — gRPC service for bidirectional site-to-site communication.
+// Used by the NeuraNAC-to-NeuraNAC adapter for real-time data exchange between sites.
+service BridgeService {
+  // StreamMessages — persistent bidirectional stream for real-time events.
+  // Channels multiplexed via message.channel field:
+  //   - "policy_sync": policy changes pushed in real-time
+  //   - "session_events": auth events, CoA notifications
+  //   - "config_sync": feature flags, identity sources
+  //   - "heartbeat": keep-alive pings
+  rpc StreamMessages(stream BridgeMessage) returns (stream BridgeMessage);
+
+  // SyncData — request/response for bulk data synchronization.
+  // Used for initial sync, large dataset transfers, and resync operations.
+  rpc SyncData(SyncRequest) returns (stream SyncChunk);
+
+  // ProxyRequest — forward an HTTP request to the peer site.
+  // Replaces the old FederationMiddleware single-peer HTTP forwarding.
+  rpc ProxyRequest(HttpProxyRequest) returns (HttpProxyResponse);
+
+  // HealthCheck — check peer site connectivity.
+  rpc HealthCheck(HealthRequest) returns (HealthResponse);
+}
+
+// BridgeMessage — a single message in the bidirectional stream.
+message BridgeMessage {
+  string message_id = 1;
+  string channel = 2;        // "policy_sync", "session_events", "config_sync", "heartbeat"
+  string tenant_id = 3;
+  string site_id = 4;
+  string sender_node_id = 5;
+  int64 timestamp_ms = 6;
+  bytes payload = 7;          // JSON-encoded payload
+  map<string, string> metadata = 8;
+}
+
+// SyncRequest — request for bulk data synchronization.
+message SyncRequest {
+  string tenant_id = 1;
+  string site_id = 2;
+  string entity_type = 3;    // "policies", "endpoints", "identity_sources", etc.
+  string cursor = 4;          // keyset pagination cursor (empty = start from beginning)
+  int32 page_size = 5;        // max items per chunk (default 100)
+}
+
+// SyncChunk — a chunk of synced data (streamed).
+message SyncChunk {
+  string entity_type = 1;
+  int32 chunk_index = 2;
+  int32 total_chunks = 3;     // 0 = unknown (streaming)
+  bytes data = 4;              // JSON array of entities
+  string next_cursor = 5;     // empty = no more data
+  bool is_last = 6;
+}
+
+// HttpProxyRequest — forward an HTTP request through the bridge.
+message HttpProxyRequest {
+  string method = 1;           // GET, POST, PUT, DELETE, PATCH
+  string path = 2;             // /api/v1/...
+  bytes body = 3;
+  map<string, string> headers = 4;
+  string tenant_id = 5;
+  string site_id = 6;
+  float timeout_seconds = 7;  // default 30
+}
+
+// HttpProxyResponse — response from the proxied HTTP request.
+message HttpProxyResponse {
+  int32 status_code = 1;
+  bytes body = 2;
+  map<string, string> headers = 3;
+}
+
+// HealthRequest / HealthResponse
+message HealthRequest {
+  string sender_site_id = 1;
+  string sender_node_id = 2;
+}
+
+message HealthResponse {
+  string site_id = 1;
+  string status = 2;          // "healthy", "degraded", "error"
+  int32 connection_count = 3;
+  int64 uptime_seconds = 4;
+  map<string, string> metadata = 5;
+}

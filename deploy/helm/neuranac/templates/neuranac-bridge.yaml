@@ -1,0 +1,84 @@
+{{- if .Values.neuranacBridge.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-neuranac-bridge
+  labels:
+    app.kubernetes.io/name: neuranac-bridge
+spec:
+  replicas: {{ .Values.neuranacBridge.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: neuranac-bridge
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: neuranac-bridge
+    spec:
+      containers:
+        - name: neuranac-bridge
+          image: "{{ .Values.neuranacBridge.image.repository }}:{{ .Values.neuranacBridge.image.tag | default .Chart.AppVersion }}"
+          ports:
+            - containerPort: {{ .Values.neuranacBridge.port }}
+              name: http
+          env:
+            - name: NEURANAC_BRIDGE_BRIDGE_NAME
+              value: {{ .Release.Name }}-neuranac-bridge
+            - name: NEURANAC_BRIDGE_SITE_ID
+              value: {{ .Values.global.siteId | quote }}
+            - name: NEURANAC_BRIDGE_SITE_TYPE
+              value: {{ .Values.global.siteType | quote }}
+            - name: NEURANAC_BRIDGE_DEPLOYMENT_MODE
+              value: {{ .Values.global.deploymentMode | quote }}
+            - name: NEURANAC_BRIDGE_CLOUD_NeuraNAC_API_URL
+              value: "http://{{ .Release.Name }}-api-gateway:8080"
+            - name: NEURANAC_BRIDGE_CLOUD_NeuraNAC_WS_URL
+              value: "ws://{{ .Release.Name }}-api-gateway:8080/api/v1/ws/bridge"
+            - name: NEURANAC_BRIDGE_LEGACY_NAC_ENABLED
+              value: {{ .Values.global.legacyNacEnabled | quote }}
+            {{- if .Values.neuranacBridge.adapters.legacy_nac.enabled }}
+            - name: NEURANAC_BRIDGE_NeuraNAC_HOSTNAME
+              value: {{ .Values.neuranacBridge.adapters.legacy_nac.hostname | quote }}
+            {{- end }}
+            - name: NEURANAC_BRIDGE_PEER_API_URL
+              value: {{ .Values.global.peerApiUrl | quote }}
+            - name: NEURANAC_BRIDGE_NATS_URL
+              value: "nats://{{ .Release.Name }}-nats:4222"
+            - name: NEURANAC_BRIDGE_SIMULATED
+              value: {{ .Values.neuranacBridge.simulated | quote }}
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-env
+          resources:
+            {{- toYaml .Values.neuranacBridge.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            failureThreshold: 30
+            periodSeconds: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-neuranac-bridge
+spec:
+  ports:
+    - port: 8090
+      targetPort: http
+      name: http
+  selector:
+    app.kubernetes.io/name: neuranac-bridge
+{{- end }}

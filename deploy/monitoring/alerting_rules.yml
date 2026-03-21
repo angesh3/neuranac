@@ -1,0 +1,273 @@
+groups:
+  - name: neuranac_radius_alerts
+    rules:
+      - alert: RADIUSAuthHighErrorRate
+        expr: rate(radius_auth_rejects_total[5m]) / rate(radius_auth_requests_total[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+          service: radius-server
+        annotations:
+          summary: "RADIUS authentication error rate > 5%"
+          description: "{{ $labels.instance }} has a RADIUS reject rate of {{ $value | humanizePercentage }} over the last 5 minutes."
+
+      - alert: RADIUSAuthDown
+        expr: up{job="radius-server"} == 0
+        for: 30s
+        labels:
+          severity: critical
+          service: radius-server
+        annotations:
+          summary: "RADIUS server is down"
+          description: "{{ $labels.instance }} has been unreachable for 30 seconds."
+
+      - alert: RADIUSAuthLatencyHigh
+        expr: histogram_quantile(0.95, rate(radius_auth_duration_seconds_bucket[5m])) > 1.0
+        for: 5m
+        labels:
+          severity: warning
+          service: radius-server
+        annotations:
+          summary: "RADIUS auth p95 latency > 1s"
+          description: "{{ $labels.instance }} p95 auth latency is {{ $value }}s."
+
+      - alert: RADIUSEAPSessionsHigh
+        expr: radius_eap_sessions_active > 500
+        for: 5m
+        labels:
+          severity: warning
+          service: radius-server
+        annotations:
+          summary: "High number of active EAP sessions"
+          description: "{{ $labels.instance }} has {{ $value }} active EAP sessions."
+
+      - alert: RADIUSDroppedPackets
+        expr: rate(radius_auth_dropped_total[5m]) > 0
+        for: 2m
+        labels:
+          severity: warning
+          service: radius-server
+        annotations:
+          summary: "RADIUS server dropping packets"
+          description: "{{ $labels.instance }} is dropping auth packets at {{ $value }}/s."
+
+  - name: neuranac_api_alerts
+    rules:
+      - alert: APIGatewayDown
+        expr: up{job="api-gateway"} == 0
+        for: 30s
+        labels:
+          severity: critical
+          service: api-gateway
+        annotations:
+          summary: "API Gateway is down"
+          description: "{{ $labels.instance }} has been unreachable for 30 seconds."
+
+      - alert: APIHighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+          service: api-gateway
+        annotations:
+          summary: "API error rate > 5%"
+          description: "{{ $labels.instance }} has {{ $value | humanizePercentage }} 5xx error rate."
+
+      - alert: APILatencyHigh
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 2.0
+        for: 5m
+        labels:
+          severity: warning
+          service: api-gateway
+        annotations:
+          summary: "API p95 latency > 2s"
+          description: "{{ $labels.instance }} p95 latency is {{ $value }}s."
+
+      - alert: APIRateLimitTriggered
+        expr: rate(http_requests_total{status="429"}[5m]) > 1
+        for: 5m
+        labels:
+          severity: warning
+          service: api-gateway
+        annotations:
+          summary: "Rate limiting triggered frequently"
+          description: "{{ $labels.instance }} is rate-limiting {{ $value }} requests/sec."
+
+  - name: neuranac_infrastructure_alerts
+    rules:
+      - alert: PostgreSQLDown
+        expr: pg_up == 0
+        for: 30s
+        labels:
+          severity: critical
+          service: postgresql
+        annotations:
+          summary: "PostgreSQL is down"
+          description: "PostgreSQL has been unreachable for 30 seconds."
+
+      - alert: PostgreSQLConnectionPoolExhausted
+        expr: pg_stat_activity_count / pg_settings_max_connections > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          service: postgresql
+        annotations:
+          summary: "PostgreSQL connection pool > 80% utilized"
+          description: "{{ $value | humanizePercentage }} of max connections in use."
+
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 30s
+        labels:
+          severity: critical
+          service: redis
+        annotations:
+          summary: "Redis is down"
+          description: "Redis has been unreachable for 30 seconds. Rate limiting and EAP sessions affected."
+
+      - alert: RedisMemoryHigh
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          service: redis
+        annotations:
+          summary: "Redis memory usage > 80%"
+          description: "Redis is using {{ $value | humanizePercentage }} of max memory."
+
+      - alert: NATSDown
+        expr: up{job="nats"} == 0
+        for: 30s
+        labels:
+          severity: critical
+          service: nats
+        annotations:
+          summary: "NATS is down"
+          description: "NATS messaging has been unreachable for 30 seconds."
+
+      - alert: NATSSlowConsumers
+        expr: gnatsd_connz_slow_consumers > 0
+        for: 2m
+        labels:
+          severity: warning
+          service: nats
+        annotations:
+          summary: "NATS has slow consumers"
+          description: "{{ $value }} slow consumers detected."
+
+  - name: neuranac_service_alerts
+    rules:
+      - alert: PolicyEngineDown
+        expr: up{job="policy-engine"} == 0
+        for: 30s
+        labels:
+          severity: critical
+          service: policy-engine
+        annotations:
+          summary: "Policy Engine is down"
+          description: "Policy Engine is unreachable — RADIUS auth will fail."
+
+      - alert: AIEngineDown
+        expr: up{job="ai-engine"} == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: ai-engine
+        annotations:
+          summary: "AI Engine is down"
+          description: "AI Engine is unreachable — AI features degraded."
+
+      - alert: SyncEngineDown
+        expr: up{job="sync-engine"} == 0
+        for: 1m
+        labels:
+          severity: warning
+          service: sync-engine
+        annotations:
+          summary: "Sync Engine is down"
+          description: "Twin-node synchronization is not running."
+
+      - alert: PolicyEvalErrors
+        expr: rate(radius_policy_eval_errors_total[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: critical
+          service: radius-server
+        annotations:
+          summary: "Policy evaluation errors detected"
+          description: "Policy evaluation failing at {{ $value }}/s."
+
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) < 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Disk space < 10%"
+          description: "{{ $labels.instance }} has {{ $value | humanizePercentage }} disk space remaining."
+
+      - alert: ContainerRestarting
+        expr: rate(kube_pod_container_status_restarts_total[15m]) > 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Container restarting"
+          description: "{{ $labels.container }} in {{ $labels.pod }} has restarted {{ $value }} times in 15m."
+
+  - name: neuranac_federation_alerts
+    rules:
+      - alert: FederationPeerUnreachable
+        expr: neuranac_federation_peer_failures_total > 3
+        for: 1m
+        labels:
+          severity: critical
+          service: api-gateway
+          site_id: "{{ $labels.site_id }}"
+        annotations:
+          summary: "Federation peer unreachable — circuit breaker open"
+          description: "Site {{ $labels.site_id }} cannot reach peer. {{ $value }} consecutive failures."
+
+      - alert: FederationSignatureRejected
+        expr: rate(neuranac_federation_sig_rejected_total[5m]) > 0
+        for: 2m
+        labels:
+          severity: warning
+          service: api-gateway
+          site_id: "{{ $labels.site_id }}"
+        annotations:
+          summary: "Inbound federation requests failing HMAC verification"
+          description: "{{ $value }}/s federation requests rejected on site {{ $labels.site_id }}."
+
+      - alert: FederationLatencyHigh
+        expr: histogram_quantile(0.95, rate(neuranac_federation_proxy_duration_seconds_bucket[5m])) > 5.0
+        for: 5m
+        labels:
+          severity: warning
+          service: api-gateway
+          site_id: "{{ $labels.site_id }}"
+        annotations:
+          summary: "Federation proxy p95 latency > 5s"
+          description: "Cross-site requests from {{ $labels.site_id }} are slow: {{ $value }}s p95."
+
+      - alert: NeuraNACBridgeDown
+        expr: up{job="neuranac-bridge"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: neuranac-bridge
+          site_id: "{{ $labels.site_id }}"
+        annotations:
+          summary: "NeuraNAC Bridge is down"
+          description: "Bridge Connector on site {{ $labels.site_id }} is unreachable."
+
+      - alert: SyncReplicationLag
+        expr: neuranac_sync_replication_lag_seconds > 30
+        for: 5m
+        labels:
+          severity: warning
+          service: sync-engine
+          site_id: "{{ $labels.site_id }}"
+        annotations:
+          summary: "Cross-site replication lag > 30s"
+          description: "Site {{ $labels.site_id }} replication lag: {{ $value }}s."

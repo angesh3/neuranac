@@ -1,0 +1,14 @@
+# Scenario 3: On-prem only, no NeuraNAC
+global:
+  siteType: onprem
+  deploymentMode: standalone
+  legacyNacEnabled: false
+  peerApiUrl: ""
+  bridgeUrl: "http://neuranac-bridge:8090"
+
+syncEngine:
+  peerAddress: ""
+
+neuranacBridge:
+  enabled: true
+  simulated: true

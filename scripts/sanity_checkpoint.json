@@ -1,0 +1,2981 @@
+{
+  "results": {
+    "infra-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:19:59.271376+00:00"
+    },
+    "infra-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /ready",
+      "timestamp": "2026-03-05T15:19:59.935814+00:00"
+    },
+    "infra-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /metrics",
+      "timestamp": "2026-03-05T15:20:00.618348+00:00"
+    },
+    "infra-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/openapi.json",
+      "timestamp": "2026-03-05T15:20:01.806005+00:00"
+    },
+    "auth-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/auth/login",
+      "timestamp": "2026-03-05T15:20:02.838846+00:00"
+    },
+    "auth-02": {
+      "status": "pass",
+      "code": 401,
+      "endpoint": "POST /api/v1/auth/refresh",
+      "timestamp": "2026-03-05T15:20:03.471613+00:00"
+    },
+    "auth-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/auth/logout",
+      "timestamp": "2026-03-05T15:20:04.131350+00:00"
+    },
+    "pol-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/policies/",
+      "timestamp": "2026-03-05T15:20:04.946450+00:00"
+    },
+    "pol-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/policies/",
+      "timestamp": "2026-03-05T15:20:05.715458+00:00"
+    },
+    "pol-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/policies/2a8a6b22-c701-4a7b-b465-8faca7c3a9fd",
+      "timestamp": "2026-03-05T15:20:06.443423+00:00"
+    },
+    "pol-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "PUT /api/v1/policies/2a8a6b22-c701-4a7b-b465-8faca7c3a9fd",
+      "timestamp": "2026-03-05T15:20:07.167691+00:00"
+    },
+    "pol-05": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/policies/2a8a6b22-c701-4a7b-b465-8faca7c3a9fd/rules",
+      "timestamp": "2026-03-05T15:20:07.868713+00:00"
+    },
+    "pol-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/policies/2a8a6b22-c701-4a7b-b465-8faca7c3a9fd/rules",
+      "timestamp": "2026-03-05T15:20:08.546673+00:00"
+    },
+    "pol-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "PUT /api/v1/policies/2a8a6b22-c701-4a7b-b465-8faca7c3a9fd/rules/af2a0eb1-f104-4914-9303-34d68d7587d9",
+      "timestamp": "2026-03-05T15:20:09.252976+00:00"
+    },
+    "pol-08": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/policies/2a8a6b22-c701-4a7b-b465-8faca7c3a9fd/rules/af2a0eb1-f104-4914-9303-34d68d7587d9",
+      "timestamp": "2026-03-05T15:20:09.939889+00:00"
+    },
+    "pol-09": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/policies/2a8a6b22-c701-4a7b-b465-8faca7c3a9fd",
+      "timestamp": "2026-03-05T15:20:10.623029+00:00"
+    },
+    "pol-10": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/policies/auth-profiles/",
+      "timestamp": "2026-03-05T15:20:11.265204+00:00"
+    },
+    "pol-11": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/policies/auth-profiles/",
+      "timestamp": "2026-03-05T15:20:11.903491+00:00"
+    },
+    "id-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/identity-sources/",
+      "timestamp": "2026-03-05T15:20:12.825617+00:00"
+    },
+    "id-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/identity-sources/",
+      "timestamp": "2026-03-05T15:20:13.480482+00:00"
+    },
+    "id-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/identity-sources/55f04e83-0630-44fa-92ce-6f49efb92e48",
+      "timestamp": "2026-03-05T15:20:14.178187+00:00"
+    },
+    "id-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "PUT /api/v1/identity-sources/55f04e83-0630-44fa-92ce-6f49efb92e48",
+      "timestamp": "2026-03-05T15:20:14.819807+00:00"
+    },
+    "id-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/identity-sources/55f04e83-0630-44fa-92ce-6f49efb92e48/test",
+      "timestamp": "2026-03-05T15:20:15.625217+00:00"
+    },
+    "id-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/identity-sources/55f04e83-0630-44fa-92ce-6f49efb92e48/sync",
+      "timestamp": "2026-03-05T15:20:16.270441+00:00"
+    },
+    "id-07": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/identity-sources/55f04e83-0630-44fa-92ce-6f49efb92e48",
+      "timestamp": "2026-03-05T15:20:16.925843+00:00"
+    },
+    "id-08": {
+      "status": "pass",
+      "code": 400,
+      "endpoint": "POST /api/v1/identity-sources/saml/initiate",
+      "timestamp": "2026-03-05T15:20:17.579660+00:00"
+    },
+    "id-09": {
+      "status": "pass",
+      "code": 400,
+      "endpoint": "POST /api/v1/identity-sources/saml/acs",
+      "timestamp": "2026-03-05T15:20:18.222447+00:00"
+    },
+    "id-10": {
+      "status": "pass",
+      "code": 422,
+      "endpoint": "POST /api/v1/identity-sources/oauth/initiate",
+      "timestamp": "2026-03-05T15:20:18.869256+00:00"
+    },
+    "id-11": {
+      "status": "pass",
+      "code": 422,
+      "endpoint": "POST /api/v1/identity-sources/oauth/callback",
+      "timestamp": "2026-03-05T15:20:19.509964+00:00"
+    },
+    "net-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/network-devices/",
+      "timestamp": "2026-03-05T15:20:20.171471+00:00"
+    },
+    "net-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/network-devices/",
+      "timestamp": "2026-03-05T15:20:20.857167+00:00"
+    },
+    "net-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/network-devices/ef9cda92-2717-49c1-8897-de6faf75bb5c",
+      "timestamp": "2026-03-05T15:20:21.562467+00:00"
+    },
+    "net-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "PUT /api/v1/network-devices/ef9cda92-2717-49c1-8897-de6faf75bb5c",
+      "timestamp": "2026-03-05T15:20:22.218414+00:00"
+    },
+    "net-05": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/network-devices/ef9cda92-2717-49c1-8897-de6faf75bb5c",
+      "timestamp": "2026-03-05T15:20:22.855423+00:00"
+    },
+    "net-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/network-devices/discover",
+      "timestamp": "2026-03-05T15:20:23.523844+00:00"
+    },
+    "ep-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/endpoints/",
+      "timestamp": "2026-03-05T15:20:24.462925+00:00"
+    },
+    "ep-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/endpoints/",
+      "timestamp": "2026-03-05T15:20:25.133567+00:00"
+    },
+    "ep-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/endpoints/2ea7e850-f4bc-4b9a-8963-0d49a1029760",
+      "timestamp": "2026-03-05T15:20:25.814878+00:00"
+    },
+    "ep-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "PUT /api/v1/endpoints/2ea7e850-f4bc-4b9a-8963-0d49a1029760",
+      "timestamp": "2026-03-05T15:20:26.460880+00:00"
+    },
+    "ep-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/endpoints/2ea7e850-f4bc-4b9a-8963-0d49a1029760/profile",
+      "timestamp": "2026-03-05T15:20:27.106842+00:00"
+    },
+    "ep-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/endpoints/by-mac/AA:BB:CC:DD:EE:99",
+      "timestamp": "2026-03-05T15:20:28.180281+00:00"
+    },
+    "ep-07": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/endpoints/2ea7e850-f4bc-4b9a-8963-0d49a1029760",
+      "timestamp": "2026-03-05T15:20:28.851291+00:00"
+    },
+    "seg-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/segmentation/sgts",
+      "timestamp": "2026-03-05T15:20:29.534676+00:00"
+    },
+    "seg-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/segmentation/sgts",
+      "timestamp": "2026-03-05T15:20:30.192170+00:00"
+    },
+    "seg-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/segmentation/sgts/682973e9-e6e2-4ce5-8ad9-f50d9acc4128",
+      "timestamp": "2026-03-05T15:20:30.829126+00:00"
+    },
+    "seg-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "PUT /api/v1/segmentation/sgts/682973e9-e6e2-4ce5-8ad9-f50d9acc4128",
+      "timestamp": "2026-03-05T15:20:31.462741+00:00"
+    },
+    "seg-05": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/segmentation/sgts/682973e9-e6e2-4ce5-8ad9-f50d9acc4128",
+      "timestamp": "2026-03-05T15:20:32.113175+00:00"
+    },
+    "seg-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/segmentation/matrix",
+      "timestamp": "2026-03-05T15:20:32.738030+00:00"
+    },
+    "cert-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/certificates/cas",
+      "timestamp": "2026-03-05T15:20:33.389520+00:00"
+    },
+    "cert-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/certificates/cas",
+      "timestamp": "2026-03-05T15:20:34.080057+00:00"
+    },
+    "cert-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/certificates/",
+      "timestamp": "2026-03-05T15:20:34.724776+00:00"
+    },
+    "cert-04": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/certificates/",
+      "timestamp": "2026-03-05T15:20:35.404892+00:00"
+    },
+    "cert-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/certificates/11082c47-4698-4f24-a256-4079152195c5",
+      "timestamp": "2026-03-05T15:20:36.064445+00:00"
+    },
+    "cert-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/certificates/11082c47-4698-4f24-a256-4079152195c5/revoke",
+      "timestamp": "2026-03-05T15:20:36.700357+00:00"
+    },
+    "sess-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sessions/",
+      "timestamp": "2026-03-05T15:20:37.354278+00:00"
+    },
+    "sess-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sessions/active/count",
+      "timestamp": "2026-03-05T15:20:38.009439+00:00"
+    },
+    "guest-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/guest/portals",
+      "timestamp": "2026-03-05T15:20:38.672786+00:00"
+    },
+    "guest-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/guest/portals",
+      "timestamp": "2026-03-05T15:20:39.337859+00:00"
+    },
+    "guest-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/guest/portals/9f0f9d15-b303-46c0-8aca-36233080c835",
+      "timestamp": "2026-03-05T15:20:39.990006+00:00"
+    },
+    "guest-04": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/guest/portals/9f0f9d15-b303-46c0-8aca-36233080c835",
+      "timestamp": "2026-03-05T15:20:40.636655+00:00"
+    },
+    "guest-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/guest/accounts",
+      "timestamp": "2026-03-05T15:20:41.289298+00:00"
+    },
+    "guest-06": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/guest/accounts",
+      "timestamp": "2026-03-05T15:20:41.982093+00:00"
+    },
+    "guest-07": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/guest/accounts/sanity_guest",
+      "timestamp": "2026-03-05T15:20:42.639299+00:00"
+    },
+    "guest-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/guest/sponsor-groups",
+      "timestamp": "2026-03-05T15:20:43.279766+00:00"
+    },
+    "guest-09": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/guest/captive-portal/page",
+      "timestamp": "2026-03-05T15:20:43.927571+00:00"
+    },
+    "guest-10": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/guest/captive-portal/authenticate",
+      "timestamp": "2026-03-05T15:20:44.560554+00:00"
+    },
+    "guest-11": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/guest/byod/register",
+      "timestamp": "2026-03-05T15:20:45.554949+00:00"
+    },
+    "guest-12": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/guest/byod/registrations",
+      "timestamp": "2026-03-05T15:20:46.213381+00:00"
+    },
+    "post-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/posture/policies",
+      "timestamp": "2026-03-05T15:20:46.901948+00:00"
+    },
+    "post-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/posture/policies",
+      "timestamp": "2026-03-05T15:20:47.546529+00:00"
+    },
+    "post-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/posture/policies/df560316-e0d9-45c5-9d27-5da32e7693bc",
+      "timestamp": "2026-03-05T15:20:48.207993+00:00"
+    },
+    "post-04": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/posture/policies/df560316-e0d9-45c5-9d27-5da32e7693bc",
+      "timestamp": "2026-03-05T15:20:48.844810+00:00"
+    },
+    "post-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/posture/assess",
+      "timestamp": "2026-03-05T15:20:49.489142+00:00"
+    },
+    "post-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/posture/results",
+      "timestamp": "2026-03-05T15:20:50.124349+00:00"
+    },
+    "siem-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/siem/destinations",
+      "timestamp": "2026-03-05T15:20:50.767881+00:00"
+    },
+    "siem-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/siem/destinations",
+      "timestamp": "2026-03-05T15:20:51.413980+00:00"
+    },
+    "siem-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/siem/destinations/f91f0787-e334-45c6-9aa6-a677f45da668/test",
+      "timestamp": "2026-03-05T15:20:52.051082+00:00"
+    },
+    "siem-04": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/siem/destinations/f91f0787-e334-45c6-9aa6-a677f45da668",
+      "timestamp": "2026-03-05T15:20:52.687462+00:00"
+    },
+    "siem-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/siem/forward",
+      "timestamp": "2026-03-05T15:20:53.322653+00:00"
+    },
+    "siem-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/siem/soar/playbooks",
+      "timestamp": "2026-03-05T15:20:53.982716+00:00"
+    },
+    "siem-07": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/siem/soar/playbooks",
+      "timestamp": "2026-03-05T15:20:54.637995+00:00"
+    },
+    "siem-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/siem/soar/playbooks/0bdb49f3-c192-4a5d-8a98-1e11e72d4d9d/trigger",
+      "timestamp": "2026-03-05T15:20:55.322488+00:00"
+    },
+    "wh-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/webhooks/",
+      "timestamp": "2026-03-05T15:20:55.955946+00:00"
+    },
+    "wh-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/webhooks/",
+      "timestamp": "2026-03-05T15:20:56.597434+00:00"
+    },
+    "wh-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/webhooks/wh-1",
+      "timestamp": "2026-03-05T15:20:57.235351+00:00"
+    },
+    "wh-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "PUT /api/v1/webhooks/wh-1",
+      "timestamp": "2026-03-05T15:20:57.868972+00:00"
+    },
+    "wh-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/webhooks/wh-1/test",
+      "timestamp": "2026-03-05T15:20:58.529918+00:00"
+    },
+    "wh-06": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/webhooks/wh-1",
+      "timestamp": "2026-03-05T15:20:59.156452+00:00"
+    },
+    "wh-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/webhooks/plugins",
+      "timestamp": "2026-03-05T15:20:59.810965+00:00"
+    },
+    "wh-08": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/webhooks/plugins",
+      "timestamp": "2026-03-05T15:21:00.441399+00:00"
+    },
+    "wh-09": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/webhooks/plugins/plugin-1/enable",
+      "timestamp": "2026-03-05T15:21:01.071105+00:00"
+    },
+    "wh-10": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/webhooks/plugins/plugin-1/disable",
+      "timestamp": "2026-03-05T15:21:01.726603+00:00"
+    },
+    "wh-11": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/webhooks/plugins/plugin-1",
+      "timestamp": "2026-03-05T15:21:02.521176+00:00"
+    },
+    "priv-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/privacy/subjects",
+      "timestamp": "2026-03-05T15:21:03.281572+00:00"
+    },
+    "priv-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/privacy/subjects",
+      "timestamp": "2026-03-05T15:21:03.946884+00:00"
+    },
+    "priv-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/privacy/subjects/fe24dde0-4c01-4172-8538-e3b6a2d01095",
+      "timestamp": "2026-03-05T15:21:04.586844+00:00"
+    },
+    "priv-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/privacy/subjects/fe24dde0-4c01-4172-8538-e3b6a2d01095/erasure",
+      "timestamp": "2026-03-05T15:21:05.240123+00:00"
+    },
+    "priv-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/privacy/consent",
+      "timestamp": "2026-03-05T15:21:05.886730+00:00"
+    },
+    "priv-06": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/privacy/consent",
+      "timestamp": "2026-03-05T15:21:06.520596+00:00"
+    },
+    "priv-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/privacy/consent/c1fe7282-5648-438c-8d88-bb7fd4999552/revoke",
+      "timestamp": "2026-03-05T15:21:07.193873+00:00"
+    },
+    "priv-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/privacy/exports",
+      "timestamp": "2026-03-05T15:21:08.088975+00:00"
+    },
+    "priv-09": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/privacy/exports",
+      "timestamp": "2026-03-05T15:21:08.780107+00:00"
+    },
+    "ai-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/agents/",
+      "timestamp": "2026-03-05T15:21:09.446416+00:00"
+    },
+    "ai-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/ai/agents/",
+      "timestamp": "2026-03-05T15:21:10.107699+00:00"
+    },
+    "ai-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/agents/b558a0fb-0f8b-4730-aa49-322e07cb0d4d",
+      "timestamp": "2026-03-05T15:21:10.754079+00:00"
+    },
+    "ai-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "PUT /api/v1/ai/agents/b558a0fb-0f8b-4730-aa49-322e07cb0d4d",
+      "timestamp": "2026-03-05T15:21:11.404759+00:00"
+    },
+    "ai-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/agents/b558a0fb-0f8b-4730-aa49-322e07cb0d4d/revoke",
+      "timestamp": "2026-03-05T15:21:12.039405+00:00"
+    },
+    "ai-06": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/ai/agents/b558a0fb-0f8b-4730-aa49-322e07cb0d4d",
+      "timestamp": "2026-03-05T15:21:12.683041+00:00"
+    },
+    "ai-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/data-flow/services",
+      "timestamp": "2026-03-05T15:21:13.334360+00:00"
+    },
+    "ai-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/data-flow/detections",
+      "timestamp": "2026-03-05T15:21:13.986828+00:00"
+    },
+    "ai-09": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/data-flow/policies",
+      "timestamp": "2026-03-05T15:21:14.623626+00:00"
+    },
+    "ai-10": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/ai/data-flow/policies",
+      "timestamp": "2026-03-05T15:21:15.294501+00:00"
+    },
+    "aud-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/audit/",
+      "timestamp": "2026-03-05T15:21:15.994680+00:00"
+    },
+    "aud-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/audit/reports/summary",
+      "timestamp": "2026-03-05T15:21:16.641249+00:00"
+    },
+    "aud-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/audit/reports/auth",
+      "timestamp": "2026-03-05T15:21:17.272218+00:00"
+    },
+    "aud-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/audit/verify-chain",
+      "timestamp": "2026-03-05T15:21:17.958910+00:00"
+    },
+    "diag-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/system-status",
+      "timestamp": "2026-03-05T15:21:19.131082+00:00"
+    },
+    "diag-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/radius-live-log",
+      "timestamp": "2026-03-05T15:21:19.784998+00:00"
+    },
+    "diag-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/diagnostics/connectivity-test",
+      "timestamp": "2026-03-05T15:21:25.533487+00:00"
+    },
+    "diag-04": {
+      "status": "pass",
+      "code": 422,
+      "endpoint": "POST /api/v1/diagnostics/troubleshoot",
+      "timestamp": "2026-03-05T15:21:26.194366+00:00"
+    },
+    "diag-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/diagnostics/support-bundle",
+      "timestamp": "2026-03-05T15:21:26.820703+00:00"
+    },
+    "lic-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/licenses/",
+      "timestamp": "2026-03-05T15:21:27.489975+00:00"
+    },
+    "lic-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/licenses/tiers",
+      "timestamp": "2026-03-05T15:21:28.114982+00:00"
+    },
+    "lic-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/licenses/usage",
+      "timestamp": "2026-03-05T15:21:28.742740+00:00"
+    },
+    "lic-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/licenses/activate",
+      "timestamp": "2026-03-05T15:21:29.364343+00:00"
+    },
+    "node-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/",
+      "timestamp": "2026-03-05T15:21:30.004096+00:00"
+    },
+    "node-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/sync-status",
+      "timestamp": "2026-03-05T15:21:30.631882+00:00"
+    },
+    "node-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/nodes/sync/trigger",
+      "timestamp": "2026-03-05T15:21:31.261425+00:00"
+    },
+    "node-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/nodes/failover",
+      "timestamp": "2026-03-05T15:21:31.900076+00:00"
+    },
+    "setup-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/setup/status",
+      "timestamp": "2026-03-05T15:21:32.537493+00:00"
+    },
+    "setup-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/setup/step/1",
+      "timestamp": "2026-03-05T15:21:33.168374+00:00"
+    },
+    "setup-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/setup/network-scan",
+      "timestamp": "2026-03-05T15:21:33.801729+00:00"
+    },
+    "setup-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/setup/identity-source",
+      "timestamp": "2026-03-05T15:21:34.430216+00:00"
+    },
+    "setup-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/setup/policies/generate",
+      "timestamp": "2026-03-05T15:21:35.072911+00:00"
+    },
+    "setup-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/setup/network-design/generate",
+      "timestamp": "2026-03-05T15:21:35.711572+00:00"
+    },
+    "setup-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/setup/activate",
+      "timestamp": "2026-03-05T15:21:36.339754+00:00"
+    },
+    "lnac-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections",
+      "timestamp": "2026-03-05T15:21:36.985845+00:00"
+    },
+    "lnac-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/legacy-nac/connections",
+      "timestamp": "2026-03-05T15:21:37.625020+00:00"
+    },
+    "lnac-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff",
+      "timestamp": "2026-03-05T15:21:38.271930+00:00"
+    },
+    "lnac-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "PUT /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff",
+      "timestamp": "2026-03-05T15:21:38.897495+00:00"
+    },
+    "lnac-05": {
+      "status": "pass",
+      "code": 500,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/test",
+      "timestamp": "2026-03-05T15:22:50.062519+00:00"
+    },
+    "lnac-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/sync",
+      "timestamp": "2026-03-05T15:22:50.709645+00:00"
+    },
+    "lnac-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/sync-status",
+      "timestamp": "2026-03-05T15:22:51.341250+00:00"
+    },
+    "lnac-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/sync-log",
+      "timestamp": "2026-03-05T15:22:51.971470+00:00"
+    },
+    "lnac-09": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/entity-map",
+      "timestamp": "2026-03-05T15:22:52.601966+00:00"
+    },
+    "lnac-10": {
+      "status": "pass",
+      "code": 400,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/migration",
+      "timestamp": "2026-03-05T15:22:53.234865+00:00"
+    },
+    "lnac-11": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/migration-status",
+      "timestamp": "2026-03-05T15:22:53.866113+00:00"
+    },
+    "lnac-12": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/preview/network_device",
+      "timestamp": "2026-03-05T15:22:54.510938+00:00"
+    },
+    "lnac-13": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/summary",
+      "timestamp": "2026-03-05T15:22:55.148007+00:00"
+    },
+    "lnacv-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/detect-version",
+      "timestamp": "2026-03-05T15:22:55.782101+00:00"
+    },
+    "lnacv-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/schedules",
+      "timestamp": "2026-03-05T15:22:56.418145+00:00"
+    },
+    "lnacv-03": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/schedules",
+      "timestamp": "2026-03-05T15:22:57.053998+00:00"
+    },
+    "lnacv-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "PUT /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/schedules/network_device",
+      "timestamp": "2026-03-05T15:22:57.685008+00:00"
+    },
+    "lnacv-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/schedules/run-due",
+      "timestamp": "2026-03-05T15:22:58.318182+00:00"
+    },
+    "lnacv-06": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/schedules/network_device",
+      "timestamp": "2026-03-05T15:22:58.951377+00:00"
+    },
+    "lnacv-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/event-stream/connect",
+      "timestamp": "2026-03-05T15:22:59.594777+00:00"
+    },
+    "lnacv-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/event-stream/status",
+      "timestamp": "2026-03-05T15:23:00.227965+00:00"
+    },
+    "lnacv-09": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/event-stream/simulate-event?event_type=session_created",
+      "timestamp": "2026-03-05T15:23:00.988675+00:00"
+    },
+    "lnacv-10": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/event-stream/events",
+      "timestamp": "2026-03-05T15:23:01.619752+00:00"
+    },
+    "lnacv-11": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/event-stream/disconnect",
+      "timestamp": "2026-03-05T15:23:02.248632+00:00"
+    },
+    "lnacv-12": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/policies/discover",
+      "timestamp": "2026-03-05T15:23:02.878015+00:00"
+    },
+    "lnacv-13": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/policies/translate",
+      "timestamp": "2026-03-05T15:23:03.515983+00:00"
+    },
+    "lnacv-14": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/policies/translate-all",
+      "timestamp": "2026-03-05T15:23:04.150972+00:00"
+    },
+    "lnacv-15": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/policies/translations",
+      "timestamp": "2026-03-05T15:23:04.780583+00:00"
+    },
+    "lnacv-16": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/policies/translations/179669a2-c45d-4926-950e-a38696fc69ac",
+      "timestamp": "2026-03-05T15:23:05.417502+00:00"
+    },
+    "lnacv-17": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/policies/translations/179669a2-c45d-4926-950e-a38696fc69ac/apply",
+      "timestamp": "2026-03-05T15:23:06.050872+00:00"
+    },
+    "lnacv-18": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/conflicts/simulate",
+      "timestamp": "2026-03-05T15:23:06.682949+00:00"
+    },
+    "lnacv-19": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/conflicts",
+      "timestamp": "2026-03-05T15:23:07.314873+00:00"
+    },
+    "lnacv-20": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/conflicts?status=unresolved",
+      "timestamp": "2026-03-05T15:23:07.942690+00:00"
+    },
+    "lnacv-21": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/conflicts/resolve-all",
+      "timestamp": "2026-03-05T15:23:08.577201+00:00"
+    },
+    "lnacv-22": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/sync/bidirectional",
+      "timestamp": "2026-03-05T15:23:09.220967+00:00"
+    },
+    "lnacv-23": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/multi-legacy-nac/overview",
+      "timestamp": "2026-03-05T15:23:09.850288+00:00"
+    },
+    "lnacv-24": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/wizard/start",
+      "timestamp": "2026-03-05T15:23:10.567391+00:00"
+    },
+    "lnacv-25": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/wizard/547c7a35-b11f-47a8-b6ca-fb9df84750e5",
+      "timestamp": "2026-03-05T15:23:11.212728+00:00"
+    },
+    "lnacv-26": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/wizard/547c7a35-b11f-47a8-b6ca-fb9df84750e5/execute-step",
+      "timestamp": "2026-03-05T15:23:11.845228+00:00"
+    },
+    "lnacv-27": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/wizard/547c7a35-b11f-47a8-b6ca-fb9df84750e5/execute-step",
+      "timestamp": "2026-03-05T15:23:12.480907+00:00"
+    },
+    "lnacv-28": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/wizard/547c7a35-b11f-47a8-b6ca-fb9df84750e5/execute-step",
+      "timestamp": "2026-03-05T15:23:13.115765+00:00"
+    },
+    "lnacv-29": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/wizard/547c7a35-b11f-47a8-b6ca-fb9df84750e5/execute-step",
+      "timestamp": "2026-03-05T15:23:13.748283+00:00"
+    },
+    "lnacv-30": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/wizard",
+      "timestamp": "2026-03-05T15:23:14.380939+00:00"
+    },
+    "lnacv-31": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/radius-analysis/snapshot",
+      "timestamp": "2026-03-05T15:23:15.027897+00:00"
+    },
+    "lnacv-32": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/radius-analysis/snapshot",
+      "timestamp": "2026-03-05T15:23:15.656636+00:00"
+    },
+    "lnacv-33": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/radius-analysis/snapshots",
+      "timestamp": "2026-03-05T15:23:16.287606+00:00"
+    },
+    "lnacv-34": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/radius-analysis/snapshots/0cbb2f18-46f8-461e-9784-3730a15eee7a",
+      "timestamp": "2026-03-05T15:23:16.913936+00:00"
+    },
+    "lnacv-35": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/radius-analysis/compare?baseline_id=0cbb2f18-46f8-461e-9784-3730a15eee7a&current_id=d0327315-f6e0-491e-ade7-b1296c85f607",
+      "timestamp": "2026-03-05T15:23:17.546388+00:00"
+    },
+    "lnac-99": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff",
+      "timestamp": "2026-03-05T15:23:18.174878+00:00"
+    },
+    "ai1-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/chat",
+      "timestamp": "2026-03-05T15:23:18.808931+00:00"
+    },
+    "ai1-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/chat",
+      "timestamp": "2026-03-05T15:23:19.442305+00:00"
+    },
+    "ai1-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/chat",
+      "timestamp": "2026-03-05T15:23:20.079439+00:00"
+    },
+    "ai1-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/chat",
+      "timestamp": "2026-03-05T15:23:20.728101+00:00"
+    },
+    "ai1-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/chat",
+      "timestamp": "2026-03-05T15:23:21.368373+00:00"
+    },
+    "ai1-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/capabilities",
+      "timestamp": "2026-03-05T15:23:22.002415+00:00"
+    },
+    "ai1-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/suggestions?route=/",
+      "timestamp": "2026-03-05T15:23:22.633336+00:00"
+    },
+    "ai1-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/suggestions?route=/policies",
+      "timestamp": "2026-03-05T15:23:23.263944+00:00"
+    },
+    "ai1-09": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/suggestions?route=/sessions",
+      "timestamp": "2026-03-05T15:23:23.890448+00:00"
+    },
+    "ai1-10": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/suggestions?route=/diagnostics",
+      "timestamp": "2026-03-05T15:23:24.522052+00:00"
+    },
+    "ai4r-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/rag/troubleshoot",
+      "timestamp": "2026-03-05T15:23:25.164753+00:00"
+    },
+    "ai4r-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/rag/troubleshoot",
+      "timestamp": "2026-03-05T15:23:25.802075+00:00"
+    },
+    "ai4r-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/rag/troubleshoot",
+      "timestamp": "2026-03-05T15:23:26.606671+00:00"
+    },
+    "ai4t-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/training/sample",
+      "timestamp": "2026-03-05T15:23:27.252176+00:00"
+    },
+    "ai4t-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/training/stats",
+      "timestamp": "2026-03-05T15:23:27.889094+00:00"
+    },
+    "ai4s-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/nl-sql/query",
+      "timestamp": "2026-03-05T15:23:28.522787+00:00"
+    },
+    "ai4s-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/nl-sql/query",
+      "timestamp": "2026-03-05T15:23:29.157075+00:00"
+    },
+    "ai4s-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/nl-sql/query",
+      "timestamp": "2026-03-05T15:23:29.793893+00:00"
+    },
+    "ai4k-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/risk/thresholds",
+      "timestamp": "2026-03-05T15:23:30.422472+00:00"
+    },
+    "ai4k-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/risk/feedback",
+      "timestamp": "2026-03-05T15:23:31.055426+00:00"
+    },
+    "ai4k-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/risk/adaptive-stats",
+      "timestamp": "2026-03-05T15:23:31.687633+00:00"
+    },
+    "ai4f-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/tls/analyze-ja3",
+      "timestamp": "2026-03-05T15:23:32.325264+00:00"
+    },
+    "ai4f-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/tls/analyze-ja3",
+      "timestamp": "2026-03-05T15:23:32.958632+00:00"
+    },
+    "ai4f-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/tls/analyze-ja4",
+      "timestamp": "2026-03-05T15:23:33.591038+00:00"
+    },
+    "ai4f-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/tls/compute-ja3",
+      "timestamp": "2026-03-05T15:23:34.225618+00:00"
+    },
+    "ai4f-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/tls/custom-signature",
+      "timestamp": "2026-03-05T15:23:34.859669+00:00"
+    },
+    "ai4f-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/tls/detections",
+      "timestamp": "2026-03-05T15:23:35.491944+00:00"
+    },
+    "ai4f-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/tls/stats",
+      "timestamp": "2026-03-05T15:23:36.126089+00:00"
+    },
+    "ai4c-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/capacity/record",
+      "timestamp": "2026-03-05T15:23:36.758849+00:00"
+    },
+    "ai4c-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/capacity/record",
+      "timestamp": "2026-03-05T15:23:37.392484+00:00"
+    },
+    "ai4c-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/capacity/metrics",
+      "timestamp": "2026-03-05T15:23:38.024750+00:00"
+    },
+    "ai4c-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/capacity/forecast",
+      "timestamp": "2026-03-05T15:23:38.652366+00:00"
+    },
+    "ai4p-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/playbooks",
+      "timestamp": "2026-03-05T15:23:39.293212+00:00"
+    },
+    "ai4p-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/playbooks/pb-auth-failure-lockout",
+      "timestamp": "2026-03-05T15:23:39.927793+00:00"
+    },
+    "ai4p-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/playbooks/pb-shadow-ai-block",
+      "timestamp": "2026-03-05T15:23:40.560983+00:00"
+    },
+    "ai4p-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/playbooks",
+      "timestamp": "2026-03-05T15:23:41.200745+00:00"
+    },
+    "ai4p-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/playbooks/pb-auth-failure-lockout/execute",
+      "timestamp": "2026-03-05T15:23:41.836888+00:00"
+    },
+    "ai4p-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/playbooks/executions/list",
+      "timestamp": "2026-03-05T15:23:42.764985+00:00"
+    },
+    "ai4p-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/playbooks/stats/summary",
+      "timestamp": "2026-03-05T15:23:43.417556+00:00"
+    },
+    "ai4m-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/models/register",
+      "timestamp": "2026-03-05T15:23:44.068896+00:00"
+    },
+    "ai4m-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/models/register",
+      "timestamp": "2026-03-05T15:23:44.706674+00:00"
+    },
+    "ai4m-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/models",
+      "timestamp": "2026-03-05T15:23:45.341258+00:00"
+    },
+    "ai4m-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/models/experiments",
+      "timestamp": "2026-03-05T15:23:45.974391+00:00"
+    },
+    "ai4m-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/models/experiments",
+      "timestamp": "2026-03-05T15:23:46.607989+00:00"
+    },
+    "ai4m-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/models/stats",
+      "timestamp": "2026-03-05T15:23:47.242009+00:00"
+    },
+    "adm-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/admin/users",
+      "timestamp": "2026-03-05T15:23:47.890469+00:00"
+    },
+    "adm-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/admin/users",
+      "timestamp": "2026-03-05T15:23:48.704337+00:00"
+    },
+    "adm-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/admin/users/ace25296-0efe-4da7-bc8c-f396c111f123",
+      "timestamp": "2026-03-05T15:23:49.341750+00:00"
+    },
+    "adm-04": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/admin/users/ace25296-0efe-4da7-bc8c-f396c111f123",
+      "timestamp": "2026-03-05T15:23:49.972026+00:00"
+    },
+    "adm-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/admin/roles",
+      "timestamp": "2026-03-05T15:23:50.727221+00:00"
+    },
+    "adm-06": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/admin/roles",
+      "timestamp": "2026-03-05T15:23:51.360092+00:00"
+    },
+    "adm-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/admin/tenants",
+      "timestamp": "2026-03-05T15:23:51.993746+00:00"
+    },
+    "adm-08": {
+      "status": "pass",
+      "code": 500,
+      "endpoint": "POST /api/v1/admin/tenants",
+      "timestamp": "2026-03-05T15:24:23.107652+00:00"
+    },
+    "sess-03": {
+      "status": "pass",
+      "code": 404,
+      "endpoint": "GET /api/v1/sessions/00000000-0000-0000-0000-000000000001",
+      "timestamp": "2026-03-05T15:24:23.760359+00:00"
+    },
+    "sess-04": {
+      "status": "pass",
+      "code": 404,
+      "endpoint": "POST /api/v1/sessions/00000000-0000-0000-0000-000000000001/disconnect",
+      "timestamp": "2026-03-05T15:24:24.420882+00:00"
+    },
+    "sess-05": {
+      "status": "pass",
+      "code": 404,
+      "endpoint": "POST /api/v1/sessions/00000000-0000-0000-0000-000000000001/reauthenticate",
+      "timestamp": "2026-03-05T15:24:25.069281+00:00"
+    },
+    "aud-05": {
+      "status": "pass",
+      "code": 404,
+      "endpoint": "GET /api/v1/audit/00000000-0000-0000-0000-000000000001",
+      "timestamp": "2026-03-05T15:24:25.728665+00:00"
+    },
+    "dbs-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/db-schema-check",
+      "timestamp": "2026-03-05T15:24:26.375843+00:00"
+    },
+    "dbs-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/db-schema-check",
+      "timestamp": "2026-03-05T15:24:27.014803+00:00"
+    },
+    "dbs-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/db-schema-check",
+      "timestamp": "2026-03-05T15:24:27.658589+00:00"
+    },
+    "dbs-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/db-schema-check",
+      "timestamp": "2026-03-05T15:24:28.311580+00:00"
+    },
+    "dbs-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/db-schema-check",
+      "timestamp": "2026-03-05T15:24:28.959434+00:00"
+    },
+    "dbs-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/db-schema-check",
+      "timestamp": "2026-03-05T15:24:29.586539+00:00"
+    },
+    "dbs-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/db-schema-check",
+      "timestamp": "2026-03-05T15:24:30.238736+00:00"
+    },
+    "dbs-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/db-schema-check",
+      "timestamp": "2026-03-05T15:24:30.887753+00:00"
+    },
+    "gap1-01": {
+      "status": "pass",
+      "code": 404,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/event-stream/connect",
+      "timestamp": "2026-03-05T15:24:31.537704+00:00"
+    },
+    "gap1-02": {
+      "status": "pass",
+      "code": 404,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/event-stream/status",
+      "timestamp": "2026-03-05T15:24:32.189889+00:00"
+    },
+    "gap1-03": {
+      "status": "pass",
+      "code": 500,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/event-stream/simulate-event?event_type=session_created",
+      "timestamp": "2026-03-05T15:25:03.073430+00:00"
+    },
+    "gap1-04": {
+      "status": "pass",
+      "code": 500,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/event-stream/simulate-event?event_type=session_terminated",
+      "timestamp": "2026-03-05T15:25:33.966196+00:00"
+    },
+    "gap1-05": {
+      "status": "pass",
+      "code": 500,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/event-stream/simulate-event?event_type=radius_failure",
+      "timestamp": "2026-03-05T15:26:04.895170+00:00"
+    },
+    "gap1-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/event-stream/events?limit=10",
+      "timestamp": "2026-03-05T15:26:05.540150+00:00"
+    },
+    "gap1-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/event-stream/disconnect",
+      "timestamp": "2026-03-05T15:26:06.209906+00:00"
+    },
+    "gap2-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/",
+      "timestamp": "2026-03-05T15:26:06.858194+00:00"
+    },
+    "gap2-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/sync-status",
+      "timestamp": "2026-03-05T15:26:07.504136+00:00"
+    },
+    "gap2-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/nodes/sync/trigger",
+      "timestamp": "2026-03-05T15:26:08.128067+00:00"
+    },
+    "gap2-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/nodes/failover",
+      "timestamp": "2026-03-05T15:26:08.780952+00:00"
+    },
+    "gap2-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/multi-legacy-nac/overview",
+      "timestamp": "2026-03-05T15:26:09.452201+00:00"
+    },
+    "gap3-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/certificates/cas",
+      "timestamp": "2026-03-05T15:26:10.119068+00:00"
+    },
+    "gap3-02": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/certificates/",
+      "timestamp": "2026-03-05T15:26:10.836343+00:00"
+    },
+    "gap4-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections",
+      "timestamp": "2026-03-05T15:26:11.500543+00:00"
+    },
+    "gap4-02": {
+      "status": "pass",
+      "code": 404,
+      "endpoint": "POST /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/sync",
+      "timestamp": "2026-03-05T15:26:12.146055+00:00"
+    },
+    "gap4-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/connections/9c3b6d94-fbf8-4630-9cc3-55125f0626ff/sync-status",
+      "timestamp": "2026-03-05T15:26:12.789050+00:00"
+    },
+    "gap5-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/policies/",
+      "timestamp": "2026-03-05T15:26:13.441701+00:00"
+    },
+    "gap5-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/endpoints/",
+      "timestamp": "2026-03-05T15:26:14.104319+00:00"
+    },
+    "gap6-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/system-status",
+      "timestamp": "2026-03-05T15:26:14.792973+00:00"
+    },
+    "gap6-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:26:15.445203+00:00"
+    },
+    "gap6-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sessions/active/count",
+      "timestamp": "2026-03-05T15:26:16.120649+00:00"
+    },
+    "gap6-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/sync-status",
+      "timestamp": "2026-03-05T15:26:16.779196+00:00"
+    },
+    "gap7-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/system-status",
+      "timestamp": "2026-03-05T15:26:17.459963+00:00"
+    },
+    "gap7-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:26:18.103152+00:00"
+    },
+    "aid-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/profile",
+      "timestamp": "2026-03-05T15:26:18.752882+00:00"
+    },
+    "aid-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/risk-score",
+      "timestamp": "2026-03-05T15:26:19.391293+00:00"
+    },
+    "aid-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/shadow-ai/detect",
+      "timestamp": "2026-03-05T15:26:20.033839+00:00"
+    },
+    "aid-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/nlp/translate",
+      "timestamp": "2026-03-05T15:26:20.722562+00:00"
+    },
+    "aid-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/troubleshoot",
+      "timestamp": "2026-03-05T15:26:21.357653+00:00"
+    },
+    "aid-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/anomaly/analyze",
+      "timestamp": "2026-03-05T15:26:22.003151+00:00"
+    },
+    "aid-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/drift/record",
+      "timestamp": "2026-03-05T15:26:22.651271+00:00"
+    },
+    "aid-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/drift/analyze",
+      "timestamp": "2026-03-05T15:26:23.307396+00:00"
+    },
+    "aid-09": {
+      "status": "fail",
+      "code": 404,
+      "endpoint": "POST /api/v1/ai/chat",
+      "timestamp": "2026-03-05T15:26:23.952915+00:00",
+      "body_preview": "{\"detail\":\"Not Found\"}"
+    },
+    "aid-10": {
+      "status": "fail",
+      "code": 404,
+      "endpoint": "GET /api/v1/ai/capabilities",
+      "timestamp": "2026-03-05T15:26:24.581853+00:00",
+      "body_preview": "{\"detail\":\"Not Found\"}"
+    },
+    "aid-11": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:26:25.217326+00:00"
+    },
+    "aid-12": {
+      "status": "fail",
+      "code": 404,
+      "endpoint": "POST /api/v1/training/train",
+      "timestamp": "2026-03-05T15:26:25.863500+00:00",
+      "body_preview": "{\"detail\":\"Not Found\"}"
+    },
+    "aid-13": {
+      "status": "pass",
+      "code": 404,
+      "endpoint": "POST /api/v1/models/experiments/profiler-ab-test/stop",
+      "timestamp": "2026-03-05T15:26:26.510885+00:00"
+    },
+    "xtra-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/policies/auth-profiles/",
+      "timestamp": "2026-03-05T15:26:27.204249+00:00"
+    },
+    "xtra-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/segmentation/matrix",
+      "timestamp": "2026-03-05T15:26:27.847100+00:00"
+    },
+    "xtra-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/posture/results",
+      "timestamp": "2026-03-05T15:26:28.492465+00:00"
+    },
+    "xtra-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/siem/forward",
+      "timestamp": "2026-03-05T15:26:29.160851+00:00"
+    },
+    "xtra-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/guest/captive-portal/page",
+      "timestamp": "2026-03-05T15:26:29.817797+00:00"
+    },
+    "xtra-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/guest/byod/registrations",
+      "timestamp": "2026-03-05T15:26:30.472401+00:00"
+    },
+    "xtra-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/privacy/consent",
+      "timestamp": "2026-03-05T15:26:31.121114+00:00"
+    },
+    "xtra-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/licenses/usage",
+      "timestamp": "2026-03-05T15:26:31.761298+00:00"
+    },
+    "xtra-09": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/diagnostics/connectivity-test",
+      "timestamp": "2026-03-05T15:26:32.408926+00:00"
+    },
+    "xtra-10": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/summary",
+      "timestamp": "2026-03-05T15:26:33.058691+00:00"
+    },
+    "xtra-11": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/setup/status",
+      "timestamp": "2026-03-05T15:26:33.700337+00:00"
+    },
+    "gap-p0-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/policies/",
+      "timestamp": "2026-03-05T15:26:34.414002+00:00"
+    },
+    "gap-p0-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:26:35.046814+00:00"
+    },
+    "gap-p0-03": {
+      "status": "pass",
+      "code": 401,
+      "endpoint": "POST /api/v1/auth/login",
+      "timestamp": "2026-03-05T15:26:35.699515+00:00"
+    },
+    "gap-p0-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/setup/status",
+      "timestamp": "2026-03-05T15:26:36.358363+00:00"
+    },
+    "gap-p0-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:26:37.009359+00:00"
+    },
+    "gap-p0-06": {
+      "status": "fail",
+      "code": 422,
+      "endpoint": "POST /api/v1/profile",
+      "timestamp": "2026-03-05T15:26:37.653944+00:00",
+      "body_preview": "{\"detail\":[{\"type\":\"missing\",\"loc\":[\"body\"],\"msg\":\"Field required\",\"input\":null,\"url\":\"https://errors.pydantic.dev/2.6/v/missing\"}]}"
+    },
+    "gap-p1-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ws/events/status",
+      "timestamp": "2026-03-05T15:26:38.320415+00:00"
+    },
+    "gap-p1-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /metrics",
+      "timestamp": "2026-03-05T15:26:39.012044+00:00"
+    },
+    "gap-p1-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/siem/destinations",
+      "timestamp": "2026-03-05T15:26:39.674722+00:00"
+    },
+    "gap-p1-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/webhooks/",
+      "timestamp": "2026-03-05T15:26:40.332475+00:00"
+    },
+    "gap-p1-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/licenses/",
+      "timestamp": "2026-03-05T15:26:40.996166+00:00"
+    },
+    "gap-p2-01": {
+      "status": "pass",
+      "code": 405,
+      "endpoint": "OPTIONS /api/v1/policies/",
+      "timestamp": "2026-03-05T15:26:41.649777+00:00"
+    },
+    "gap-p2-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/posture/policies?skip=0&limit=5",
+      "timestamp": "2026-03-05T15:26:42.284352+00:00"
+    },
+    "gap-p2-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/admin/roles?skip=0&limit=5",
+      "timestamp": "2026-03-05T15:26:42.933447+00:00"
+    },
+    "gap-p2-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/admin/tenants?skip=0&limit=5",
+      "timestamp": "2026-03-05T15:26:43.584004+00:00"
+    },
+    "gap-p2-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/guest/portals?skip=0&limit=5",
+      "timestamp": "2026-03-05T15:26:44.241456+00:00"
+    },
+    "gap-p2-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/privacy/exports?skip=0&limit=5",
+      "timestamp": "2026-03-05T15:26:44.916527+00:00"
+    },
+    "web-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /",
+      "timestamp": "2026-03-05T15:26:45.642129+00:00"
+    },
+    "web-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /dashboard",
+      "timestamp": "2026-03-05T15:26:46.291588+00:00"
+    },
+    "web-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /policies",
+      "timestamp": "2026-03-05T15:26:46.939769+00:00"
+    },
+    "web-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /identity",
+      "timestamp": "2026-03-05T15:26:47.577220+00:00"
+    },
+    "web-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /network-devices",
+      "timestamp": "2026-03-05T15:26:48.217286+00:00"
+    },
+    "web-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /endpoints",
+      "timestamp": "2026-03-05T15:26:48.861330+00:00"
+    },
+    "web-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /segmentation",
+      "timestamp": "2026-03-05T15:26:49.498180+00:00"
+    },
+    "web-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /sessions",
+      "timestamp": "2026-03-05T15:26:50.128776+00:00"
+    },
+    "web-09": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /guest-access",
+      "timestamp": "2026-03-05T15:26:50.780642+00:00"
+    },
+    "web-10": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /certificates",
+      "timestamp": "2026-03-05T15:26:51.403586+00:00"
+    },
+    "web-11": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /posture",
+      "timestamp": "2026-03-05T15:26:52.034145+00:00"
+    },
+    "web-12": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /diagnostics",
+      "timestamp": "2026-03-05T15:26:52.678167+00:00"
+    },
+    "web-13": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /legacy-nac",
+      "timestamp": "2026-03-05T15:26:53.337799+00:00"
+    },
+    "web-14": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /legacy-nac/wizard",
+      "timestamp": "2026-03-05T15:26:53.976218+00:00"
+    },
+    "web-15": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /legacy-nac/conflicts",
+      "timestamp": "2026-03-05T15:26:54.608747+00:00"
+    },
+    "web-16": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /legacy-nac/radius-analysis",
+      "timestamp": "2026-03-05T15:26:55.242828+00:00"
+    },
+    "web-17": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /siem",
+      "timestamp": "2026-03-05T15:26:55.869906+00:00"
+    },
+    "web-18": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /webhooks",
+      "timestamp": "2026-03-05T15:26:56.503036+00:00"
+    },
+    "web-19": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /privacy",
+      "timestamp": "2026-03-05T15:26:57.137259+00:00"
+    },
+    "web-20": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /ai-agents",
+      "timestamp": "2026-03-05T15:26:57.785966+00:00"
+    },
+    "web-21": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /audit",
+      "timestamp": "2026-03-05T15:26:58.433018+00:00"
+    },
+    "web-22": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /licenses",
+      "timestamp": "2026-03-05T15:26:59.067892+00:00"
+    },
+    "web-23": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /nodes",
+      "timestamp": "2026-03-05T15:26:59.701887+00:00"
+    },
+    "web-24": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /setup",
+      "timestamp": "2026-03-05T15:27:00.334368+00:00"
+    },
+    "web-25": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /admin",
+      "timestamp": "2026-03-05T15:27:00.964219+00:00"
+    },
+    "web-26": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /settings",
+      "timestamp": "2026-03-05T15:27:01.612582+00:00"
+    },
+    "web-27": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /ai/data-flow",
+      "timestamp": "2026-03-05T15:27:02.260623+00:00"
+    },
+    "web-28": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /ai/shadow",
+      "timestamp": "2026-03-05T15:27:02.890149+00:00"
+    },
+    "web-29": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /legacy-nac",
+      "timestamp": "2026-03-05T15:27:03.527558+00:00"
+    },
+    "web-30": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /legacy-nac/wizard",
+      "timestamp": "2026-03-05T15:27:04.170634+00:00"
+    },
+    "web-31": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /legacy-nac/conflicts",
+      "timestamp": "2026-03-05T15:27:04.801093+00:00"
+    },
+    "web-32": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /legacy-nac/radius-analysis",
+      "timestamp": "2026-03-05T15:27:05.426302+00:00"
+    },
+    "web-33": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /legacy-nac/event-stream",
+      "timestamp": "2026-03-05T15:27:06.058184+00:00"
+    },
+    "web-34": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /legacy-nac/policies",
+      "timestamp": "2026-03-05T15:27:06.694652+00:00"
+    },
+    "web-35": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /topology",
+      "timestamp": "2026-03-05T15:27:07.341545+00:00"
+    },
+    "topo-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/topology/?view=physical",
+      "timestamp": "2026-03-05T15:27:08.324842+00:00"
+    },
+    "topo-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/topology/?view=logical",
+      "timestamp": "2026-03-05T15:27:09.003053+00:00"
+    },
+    "topo-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/topology/?view=dataflow",
+      "timestamp": "2026-03-05T15:27:09.699019+00:00"
+    },
+    "topo-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/topology/?view=legacy_nac",
+      "timestamp": "2026-03-05T15:27:10.400549+00:00"
+    },
+    "topo-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/topology/health-matrix",
+      "timestamp": "2026-03-05T15:27:11.092256+00:00"
+    },
+    "topo-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/chat",
+      "timestamp": "2026-03-05T15:27:11.757433+00:00"
+    },
+    "topo-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/chat",
+      "timestamp": "2026-03-05T15:27:12.431613+00:00"
+    },
+    "topo-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/chat",
+      "timestamp": "2026-03-05T15:27:13.099531+00:00"
+    },
+    "topo-09": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/chat",
+      "timestamp": "2026-03-05T15:27:13.765724+00:00"
+    },
+    "topo-10": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/suggestions?route=/topology",
+      "timestamp": "2026-03-05T15:27:14.431271+00:00"
+    },
+    "gp2-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health/full",
+      "timestamp": "2026-03-05T15:27:15.128346+00:00"
+    },
+    "gp2-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health/full",
+      "timestamp": "2026-03-05T15:27:15.812464+00:00"
+    },
+    "gp2-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health/full",
+      "timestamp": "2026-03-05T15:27:16.462661+00:00"
+    },
+    "gp2-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /ready",
+      "timestamp": "2026-03-05T15:27:17.102208+00:00"
+    },
+    "gp2-05": {
+      "status": "fail",
+      "code": 404,
+      "endpoint": "POST /api/v1/profile",
+      "timestamp": "2026-03-05T15:27:17.772511+00:00",
+      "body_preview": "{\"detail\":\"Not Found\"}"
+    },
+    "gp2-06": {
+      "status": "fail",
+      "code": 404,
+      "endpoint": "POST /api/v1/risk-score",
+      "timestamp": "2026-03-05T15:27:18.427561+00:00",
+      "body_preview": "{\"detail\":\"Not Found\"}"
+    },
+    "gp2-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/chat",
+      "timestamp": "2026-03-05T15:27:19.084854+00:00"
+    },
+    "gp2-08": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/policies/",
+      "timestamp": "2026-03-05T15:27:19.745340+00:00"
+    },
+    "gp2-09": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/policies/ec613bc0-658d-4101-84b6-79505fdea797",
+      "timestamp": "2026-03-05T15:27:20.557424+00:00"
+    },
+    "gp2-10": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:27:21.212505+00:00"
+    },
+    "gp2-11": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:27:21.864375+00:00"
+    },
+    "gp2-12": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health/full",
+      "timestamp": "2026-03-05T15:27:22.566920+00:00"
+    },
+    "gp2-13": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/auth/logout",
+      "timestamp": "2026-03-05T15:27:23.230416+00:00"
+    },
+    "gp2-14": {
+      "status": "fail",
+      "code": 404,
+      "endpoint": "GET /",
+      "timestamp": "2026-03-05T15:27:23.858026+00:00",
+      "body_preview": "{\"detail\":\"Not Found\"}"
+    },
+    "gp2-15": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:27:24.510525+00:00"
+    },
+    "hyb-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/config/ui",
+      "timestamp": "2026-03-05T15:27:25.174077+00:00"
+    },
+    "hyb-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/config/ui",
+      "timestamp": "2026-03-05T15:27:25.824475+00:00"
+    },
+    "hyb-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/config/ui",
+      "timestamp": "2026-03-05T15:27:26.501633+00:00"
+    },
+    "hyb-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sites/",
+      "timestamp": "2026-03-05T15:27:27.155647+00:00"
+    },
+    "hyb-05": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/sites/",
+      "timestamp": "2026-03-05T15:27:27.824499+00:00"
+    },
+    "hyb-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sites/d8a9c2ef-f7ae-4b3a-a78a-dbae4f7aef35",
+      "timestamp": "2026-03-05T15:27:28.480897+00:00"
+    },
+    "hyb-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sites/peer/status",
+      "timestamp": "2026-03-05T15:27:29.129652+00:00"
+    },
+    "hyb-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "DELETE /api/v1/sites/d8a9c2ef-f7ae-4b3a-a78a-dbae4f7aef35",
+      "timestamp": "2026-03-05T15:27:29.779670+00:00"
+    },
+    "hyb-09": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/connectors/",
+      "timestamp": "2026-03-05T15:27:30.440405+00:00"
+    },
+    "hyb-10": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/connectors/register",
+      "timestamp": "2026-03-05T15:27:31.088343+00:00"
+    },
+    "hyb-11": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/connectors/c4b9d0d9-25f1-45d2-853d-8e18b6c49cb1/heartbeat",
+      "timestamp": "2026-03-05T15:27:31.757168+00:00"
+    },
+    "hyb-12": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/connectors/c4b9d0d9-25f1-45d2-853d-8e18b6c49cb1",
+      "timestamp": "2026-03-05T15:27:32.419859+00:00"
+    },
+    "hyb-13": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "DELETE /api/v1/connectors/c4b9d0d9-25f1-45d2-853d-8e18b6c49cb1",
+      "timestamp": "2026-03-05T15:27:33.122098+00:00"
+    },
+    "hyb-14": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/",
+      "timestamp": "2026-03-05T15:27:33.796668+00:00"
+    },
+    "hyb-15": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/nodes/register",
+      "timestamp": "2026-03-05T15:27:34.464185+00:00"
+    },
+    "hyb-16": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/nodes/bff294bd-03e2-4c27-8307-62263c3aae00/heartbeat",
+      "timestamp": "2026-03-05T15:27:35.110651+00:00"
+    },
+    "hyb-17": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/nodes/bff294bd-03e2-4c27-8307-62263c3aae00/drain",
+      "timestamp": "2026-03-05T15:27:35.773384+00:00"
+    },
+    "hyb-18": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "DELETE /api/v1/nodes/bff294bd-03e2-4c27-8307-62263c3aae00",
+      "timestamp": "2026-03-05T15:27:36.435179+00:00"
+    },
+    "hyb-19": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/health",
+      "timestamp": "2026-03-05T15:27:37.067192+00:00"
+    },
+    "hyb-20": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/health",
+      "timestamp": "2026-03-05T15:27:37.723525+00:00"
+    },
+    "hyb-21": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/db-schema-check",
+      "timestamp": "2026-03-05T15:27:38.382377+00:00"
+    },
+    "hyb-22": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/db-schema-check",
+      "timestamp": "2026-03-05T15:27:39.028534+00:00"
+    },
+    "hyb-23": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/db-schema-check",
+      "timestamp": "2026-03-05T15:27:39.677863+00:00"
+    },
+    "hyb-24": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/diagnostics/db-schema-check",
+      "timestamp": "2026-03-05T15:27:40.323935+00:00"
+    },
+    "hyb-25": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sites/",
+      "timestamp": "2026-03-05T15:27:40.957626+00:00"
+    },
+    "hyb-26": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/twin-status",
+      "timestamp": "2026-03-05T15:27:41.601665+00:00"
+    },
+    "hyb-27": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/sync-status",
+      "timestamp": "2026-03-05T15:27:42.238183+00:00"
+    },
+    "hyb-28": {
+      "status": "fail",
+      "code": 0,
+      "endpoint": "POST http://localhost:8081/api/v1/chat",
+      "timestamp": "2026-03-05T15:28:12.967914+00:00",
+      "body_preview": ""
+    },
+    "hyb-29": {
+      "status": "fail",
+      "code": 0,
+      "endpoint": "POST http://localhost:8081/api/v1/chat",
+      "timestamp": "2026-03-05T15:28:43.731592+00:00",
+      "body_preview": ""
+    },
+    "hyb-30": {
+      "status": "fail",
+      "code": 0,
+      "endpoint": "POST http://localhost:8081/api/v1/chat",
+      "timestamp": "2026-03-05T15:29:14.512982+00:00",
+      "body_preview": ""
+    },
+    "hyb-31": {
+      "status": "fail",
+      "code": 0,
+      "endpoint": "GET http://localhost:5173/sites",
+      "timestamp": "2026-03-05T15:29:45.289073+00:00",
+      "body_preview": ""
+    },
+    "hyb-32": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/health",
+      "timestamp": "2026-03-05T15:29:45.940646+00:00"
+    },
+    "hyb-33": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/health",
+      "timestamp": "2026-03-05T15:29:46.629397+00:00"
+    },
+    "hyb-34": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/health",
+      "timestamp": "2026-03-05T15:29:47.273415+00:00"
+    },
+    "hyb-35": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/health",
+      "timestamp": "2026-03-05T15:29:47.918805+00:00"
+    },
+    "s1-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:29:48.562118+00:00"
+    },
+    "s1-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/config/ui",
+      "timestamp": "2026-03-05T15:29:49.232560+00:00"
+    },
+    "s1-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sites/",
+      "timestamp": "2026-03-05T15:29:49.864856+00:00"
+    },
+    "s1-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/connectors/",
+      "timestamp": "2026-03-05T15:29:50.511940+00:00"
+    },
+    "s1-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/legacy-nac/summary",
+      "timestamp": "2026-03-05T15:29:51.184266+00:00"
+    },
+    "s1-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sites/peer/status",
+      "timestamp": "2026-03-05T15:29:51.818473+00:00"
+    },
+    "s1-07": {
+      "status": "fail",
+      "code": 0,
+      "endpoint": "GET http://localhost:8082/health",
+      "timestamp": "2026-03-05T15:30:22.589238+00:00",
+      "body_preview": ""
+    },
+    "s1-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/",
+      "timestamp": "2026-03-05T15:30:23.433550+00:00"
+    },
+    "s2-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:30:24.068270+00:00"
+    },
+    "s2-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/config/ui",
+      "timestamp": "2026-03-05T15:30:24.728114+00:00"
+    },
+    "s2-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/connectors/",
+      "timestamp": "2026-03-05T15:30:25.389898+00:00"
+    },
+    "s2-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sites/",
+      "timestamp": "2026-03-05T15:30:26.026902+00:00"
+    },
+    "s2-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sessions/",
+      "timestamp": "2026-03-05T15:30:26.720412+00:00"
+    },
+    "s2-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/policies/",
+      "timestamp": "2026-03-05T15:30:27.398601+00:00"
+    },
+    "s3-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:30:28.026332+00:00"
+    },
+    "s3-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/config/ui",
+      "timestamp": "2026-03-05T15:30:28.667616+00:00"
+    },
+    "s3-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/sync-status",
+      "timestamp": "2026-03-05T15:30:29.331702+00:00"
+    },
+    "s3-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/twin-status",
+      "timestamp": "2026-03-05T15:30:30.000788+00:00"
+    },
+    "s3-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/connectors/",
+      "timestamp": "2026-03-05T15:30:30.637324+00:00"
+    },
+    "s3-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/policies/",
+      "timestamp": "2026-03-05T15:30:31.292002+00:00"
+    },
+    "s4-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /health",
+      "timestamp": "2026-03-05T15:30:31.943859+00:00"
+    },
+    "s4-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/config/ui",
+      "timestamp": "2026-03-05T15:30:32.611801+00:00"
+    },
+    "s4-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/connectors/",
+      "timestamp": "2026-03-05T15:30:33.271008+00:00"
+    },
+    "s4-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sites/peer/status",
+      "timestamp": "2026-03-05T15:30:33.954449+00:00"
+    },
+    "s4-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/sites/",
+      "timestamp": "2026-03-05T15:30:34.619983+00:00"
+    },
+    "s4-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/",
+      "timestamp": "2026-03-05T15:30:35.281516+00:00"
+    },
+    "s4-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/nodes/sync-status",
+      "timestamp": "2026-03-05T15:30:35.933847+00:00"
+    },
+    "s4-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/policies/",
+      "timestamp": "2026-03-05T15:30:36.594983+00:00"
+    },
+    "ing-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/events",
+      "timestamp": "2026-03-05T15:30:37.248571+00:00"
+    },
+    "ing-02": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/events?event_type=snmp",
+      "timestamp": "2026-03-05T15:30:37.904106+00:00"
+    },
+    "ing-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/events?severity=warning",
+      "timestamp": "2026-03-05T15:30:38.546803+00:00"
+    },
+    "ing-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/events?since_hours=24",
+      "timestamp": "2026-03-05T15:30:39.191939+00:00"
+    },
+    "ing-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/events/summary",
+      "timestamp": "2026-03-05T15:30:39.848487+00:00"
+    },
+    "ing-06": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/events/summary?since_hours=1",
+      "timestamp": "2026-03-05T15:30:40.507941+00:00"
+    },
+    "ing-07": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/flows",
+      "timestamp": "2026-03-05T15:30:41.169897+00:00"
+    },
+    "ing-08": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/flows?protocol=6",
+      "timestamp": "2026-03-05T15:30:41.801619+00:00"
+    },
+    "ing-09": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/flows?dst_port=443",
+      "timestamp": "2026-03-05T15:30:42.433860+00:00"
+    },
+    "ing-10": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/flows/top-talkers",
+      "timestamp": "2026-03-05T15:30:43.083592+00:00"
+    },
+    "ing-11": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/flows/top-talkers?since_hours=1&limit=5",
+      "timestamp": "2026-03-05T15:30:43.721464+00:00"
+    },
+    "ing-12": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/dhcp",
+      "timestamp": "2026-03-05T15:30:44.383133+00:00"
+    },
+    "ing-13": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/dhcp?hostname=laptop",
+      "timestamp": "2026-03-05T15:30:45.043893+00:00"
+    },
+    "ing-14": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/dhcp?os_guess=Windows",
+      "timestamp": "2026-03-05T15:30:45.700100+00:00"
+    },
+    "ing-15": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/dhcp/os-distribution",
+      "timestamp": "2026-03-05T15:30:46.353274+00:00"
+    },
+    "ing-16": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/neighbors",
+      "timestamp": "2026-03-05T15:30:47.048905+00:00"
+    },
+    "ing-17": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/neighbors?protocol=cdp",
+      "timestamp": "2026-03-05T15:30:47.722721+00:00"
+    },
+    "ing-18": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/neighbors/topology-map",
+      "timestamp": "2026-03-05T15:30:48.383259+00:00"
+    },
+    "ing-19": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/collectors",
+      "timestamp": "2026-03-05T15:30:49.026733+00:00"
+    },
+    "ing-20": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/telemetry/health",
+      "timestamp": "2026-03-05T15:30:49.690805+00:00"
+    },
+    "mi-01": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/audit/",
+      "timestamp": "2026-03-05T15:30:50.364503+00:00"
+    },
+    "mi-02": {
+      "status": "pass",
+      "code": 422,
+      "endpoint": "POST /api/v1/audit/",
+      "timestamp": "2026-03-05T15:30:51.003812+00:00"
+    },
+    "mi-03": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/audit/verify-chain",
+      "timestamp": "2026-03-05T15:30:51.662213+00:00"
+    },
+    "mi-04": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/audit/backfill-hashes",
+      "timestamp": "2026-03-05T15:30:52.315193+00:00"
+    },
+    "mi-05": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/feature-flags/",
+      "timestamp": "2026-03-05T15:30:52.978197+00:00"
+    },
+    "mi-06": {
+      "status": "pass",
+      "code": 409,
+      "endpoint": "POST /api/v1/feature-flags/",
+      "timestamp": "2026-03-05T15:30:53.645187+00:00"
+    },
+    "mi-07": {
+      "status": "pass",
+      "code": 404,
+      "endpoint": "GET /api/v1/feature-flags/sanity_test_flag/status",
+      "timestamp": "2026-03-05T15:30:54.304346+00:00"
+    },
+    "mi-08": {
+      "status": "pass",
+      "code": 404,
+      "endpoint": "PUT /api/v1/feature-flags/ca8f0466-3fa1-40f3-8ccb-3502f8475758",
+      "timestamp": "2026-03-05T15:30:54.960715+00:00"
+    },
+    "mi-09": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/agents/",
+      "timestamp": "2026-03-05T15:30:55.606708+00:00"
+    },
+    "mi-10": {
+      "status": "pass",
+      "code": 201,
+      "endpoint": "POST /api/v1/ai/agents/",
+      "timestamp": "2026-03-05T15:30:56.248905+00:00"
+    },
+    "mi-11": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/agents/217f9d6f-3ae1-4304-9744-8f9a334f12b9/delegation-chain",
+      "timestamp": "2026-03-05T15:30:56.884949+00:00"
+    },
+    "mi-12": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/agents/217f9d6f-3ae1-4304-9744-8f9a334f12b9/check-scope?action=ai:read",
+      "timestamp": "2026-03-05T15:30:57.539777+00:00"
+    },
+    "mi-13": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "POST /api/v1/ai/agents/217f9d6f-3ae1-4304-9744-8f9a334f12b9/revoke",
+      "timestamp": "2026-03-05T15:30:58.184113+00:00"
+    },
+    "mi-14": {
+      "status": "pass",
+      "code": 204,
+      "endpoint": "DELETE /api/v1/ai/agents/217f9d6f-3ae1-4304-9744-8f9a334f12b9",
+      "timestamp": "2026-03-05T15:30:58.819011+00:00"
+    },
+    "mi-15": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/models",
+      "timestamp": "2026-03-05T15:30:59.498996+00:00"
+    },
+    "mi-16": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/tls/detections",
+      "timestamp": "2026-03-05T15:31:00.145561+00:00"
+    },
+    "mi-17": {
+      "status": "pass",
+      "code": 200,
+      "endpoint": "GET /api/v1/ai/tls/stats",
+      "timestamp": "2026-03-05T15:31:00.782287+00:00"
+    }
+  },
+  "resources": {
+    "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkYTYxMDA5Yy01ZjkyLTQ5NjYtODQ5My1lOTRmMjE2MmIwMTMiLCJ0ZW5hbnRfaWQiOiJjMzA2ZTk3My02NmNmLTRiZjItYjYzYi1iZDg5NjJiNTkxNTYiLCJ1c2VybmFtZSI6ImFkbWluIiwicm9sZXMiOlsic3VwZXItYWRtaW4iXSwicGVybWlzc2lvbnMiOlsiYWRtaW46c3VwZXIiXSwiZXhwIjoxNzcyNzI0OTAyLCJ0eXBlIjoiYWNjZXNzIn0.Nnb93MRW88t3aX7JSuVqsfwMbbxMsxtKwwayyJDnYj8X8DGDk2kIl2XvrASPQWVTTzFTS4YN4oJxEx728kyZBnbw3-1_9ERxyNI9NgccwEzTuhx_-MLUPNFQDbXFLk7z_1ndM_l0NnBL5NYzI6TR2ahzTvR-q6oihMzFD9LplZk3auM5w0lA5U1tmmulyZAdMukYVAwCpN-kxpDiwrR2cWa9Lr5iup8m9MoZJ4yCXuD1lw_1BI2BNNr9D-fssx1kPJkN-Y6lxu3_U8AFIXf9EbLvMUa0BMvvdZtrE8oAAXscabBAwyfTDxRfbvgcioFwaHfNlPfbr4c3CcgkdPGcFA",
+    "policy_id": "2a8a6b22-c701-4a7b-b465-8faca7c3a9fd",
+    "rule_id": "af2a0eb1-f104-4914-9303-34d68d7587d9",
+    "idsource_id": "55f04e83-0630-44fa-92ce-6f49efb92e48",
+    "nad_id": "ef9cda92-2717-49c1-8897-de6faf75bb5c",
+    "ep_id": "2ea7e850-f4bc-4b9a-8963-0d49a1029760",
+    "sgt_id": "682973e9-e6e2-4ce5-8ad9-f50d9acc4128",
+    "ca_id": "75f67351-4437-4127-8159-67c49569a80c",
+    "cert_id": "11082c47-4698-4f24-a256-4079152195c5",
+    "portal_id": "9f0f9d15-b303-46c0-8aca-36233080c835",
+    "posture_pol_id": "df560316-e0d9-45c5-9d27-5da32e7693bc",
+    "siem_id": "f91f0787-e334-45c6-9aa6-a677f45da668",
+    "playbook_id": "0bdb49f3-c192-4a5d-8a98-1e11e72d4d9d",
+    "wh_id": "wh-1",
+    "plugin_id": "plugin-1",
+    "subject_id": "fe24dde0-4c01-4172-8538-e3b6a2d01095",
+    "consent_id": "c1fe7282-5648-438c-8d88-bb7fd4999552",
+    "agent_id": "217f9d6f-3ae1-4304-9744-8f9a334f12b9",
+    "legacy_conn_id": "9c3b6d94-fbf8-4630-9cc3-55125f0626ff",
+    "trans_id": "179669a2-c45d-4926-950e-a38696fc69ac",
+    "_conflict_list": [
+      {
+        "id": "5274c1a3-513f-4ccf-82ed-0f6ea7fc1e27",
+        "entity_type": "network_device",
+        "lnac_id": "lnac-nad-001",
+        "legacy_nac_name": "cat9300-floor1",
+        "neuranac_id": null,
+        "conflict_type": "field_mismatch",
+        "conflicting_fields": [
+          {
+            "field": "name",
+            "neuranac_value": "catalyst-9300-f1",
+            "legacy_nac_value": "cat9300-floor1"
+          },
+          {
+            "field": "description",
+            "neuranac_value": "First floor access",
+            "legacy_nac_value": "Floor 1 switch"
+          }
+        ],
+        "status": "unresolved",
+        "detected_at": "2026-03-05T15:23:06.674997+00:00"
+      },
+      {
+        "id": "813ba1a9-4dc1-470d-926e-499df1a8cfa8",
+        "entity_type": "endpoint",
+        "lnac_id": "lnac-ep-003",
+        "legacy_nac_name": "AA:BB:CC:DD:EE:03",
+        "neuranac_id": null,
+        "conflict_type": "missing_in_neuranac",
+        "conflicting_fields": [
+          {
+            "field": "entire_entity",
+            "neuranac_value": "missing",
+            "legacy_nac_value": "exists"
+          }
+        ],
+        "status": "unresolved",
+        "detected_at": "2026-03-05T15:23:06.674997+00:00"
+      },
+      {
+        "id": "6cee664c-abcb-4c90-8694-70d65d405f7c",
+        "entity_type": "sgt",
+        "lnac_id": "lnac-sgt-004",
+        "legacy_nac_name": "Quarantine",
+        "neuranac_id": null,
+        "conflict_type": "missing_in_neuranac",
+        "conflicting_fields": [
+          {
+            "field": "entire_entity",
+            "neuranac_value": "missing",
+            "legacy_nac_value": "exists"
+          }
+        ],
+        "status": "unresolved",
+        "detected_at": "2026-03-05T15:23:06.674997+00:00"
+      },
+      {
+        "id": "640b561d-efc7-436d-bcef-f313462b94db",
+        "entity_type": "internal_user",
+        "lnac_id": "lnac-user-003",
+        "legacy_nac_name": "jsmith",
+        "neuranac_id": null,
+        "conflict_type": "field_mismatch",
+        "conflicting_fields": [
+          {
+            "field": "email",
+            "neuranac_value": "john.smith@corp.com",
+            "legacy_nac_value": "jsmith@corp.com"
+          }
+        ],
+        "status": "unresolved",
+        "detected_at": "2026-03-05T15:23:06.674997+00:00"
+      }
+    ],
+    "wizard_run_id": "547c7a35-b11f-47a8-b6ca-fb9df84750e5",
+    "snap_baseline_id": "0cbb2f18-46f8-461e-9784-3730a15eee7a",
+    "snap_current_id": "d0327315-f6e0-491e-ade7-b1296c85f607",
+    "admin_user_id": "ace25296-0efe-4da7-bc8c-f396c111f123",
+    "nats_pol_id": "ec613bc0-658d-4101-84b6-79505fdea797",
+    "site_id": "d8a9c2ef-f7ae-4b3a-a78a-dbae4f7aef35",
+    "connector_id": "c4b9d0d9-25f1-45d2-853d-8e18b6c49cb1",
+    "node_reg_id": "bff294bd-03e2-4c27-8307-62263c3aae00",
+    "flag_id": "ca8f0466-3fa1-40f3-8ccb-3502f8475758"
+  },
+  "meta": {
+    "updated_at": "2026-03-05T15:31:00.782475+00:00"
+  }
+}

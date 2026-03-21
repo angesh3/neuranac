@@ -1,0 +1,144 @@
+syntax = "proto3";
+
+package neuranac.policy.v1;
+
+option go_package = "github.com/neuranac/services/radius-server/internal/pb";
+
+import "google/protobuf/struct.proto";
+
+// PolicyService evaluates access policies for RADIUS requests
+service PolicyService {
+  rpc Evaluate(PolicyRequest) returns (PolicyResponse);
+  rpc BatchEvaluate(BatchPolicyRequest) returns (BatchPolicyResponse);
+}
+
+message PolicyRequest {
+  string tenant_id = 1;
+  string session_id = 2;
+  AuthContext auth_context = 3;
+  NetworkContext network_context = 4;
+  IdentityContext identity_context = 5;
+  EndpointContext endpoint_context = 6;
+  CertContext cert_context = 7;
+  AIContext ai_context = 8;
+}
+
+message AuthContext {
+  string auth_type = 1;       // "dot1x", "mab", "tacacs"
+  string eap_type = 2;        // "eap-tls", "eap-ttls", "peap", "mab"
+  string username = 3;
+  string calling_station_id = 4;
+  string called_station_id = 5;
+  google.protobuf.Struct radius_attributes = 6;
+}
+
+message NetworkContext {
+  string nas_ip = 1;
+  string nas_port = 2;
+  string nas_port_type = 3;
+  string nas_identifier = 4;
+  string device_vendor = 5;
+  string device_model = 6;
+  string device_group = 7;
+  string site_id = 8;
+}
+
+message IdentityContext {
+  string identity_source = 1;
+  string username = 2;
+  repeated string groups = 3;
+  string domain = 4;
+  string email = 5;
+  google.protobuf.Struct attributes = 6;
+}
+
+message EndpointContext {
+  string mac_address = 1;
+  string profile_name = 2;
+  string device_type = 3;
+  string vendor = 4;
+  string os = 5;
+  string client_group = 6;
+  bool is_registered = 7;
+  string posture_status = 8;    // "compliant", "noncompliant", "unknown"
+  bool running_local_llm = 9;
+  double ai_data_upload_volume_mb = 10;
+}
+
+message CertContext {
+  string subject = 1;
+  string issuer = 2;
+  string serial = 3;
+  repeated string san = 4;
+  bool is_valid = 5;
+  string trust_chain_status = 6;
+}
+
+message AIContext {
+  string agent_id = 1;
+  string agent_type = 2;       // "copilot", "autonomous", "pipeline", "tool"
+  int32 delegation_depth = 3;
+  string delegated_by = 4;
+  string delegated_by_group = 5;
+  string model_type = 6;
+  string runtime = 7;          // "cloud-api", "onprem-gpu", "edge-device"
+  bool model_verified = 8;
+  string ai_service_destination = 9;
+  string ai_protocol = 10;
+  string data_classification = 11;
+  int32 risk_score = 12;
+  string risk_level = 13;
+  bool shadow_ai_detected = 14;
+}
+
+message PolicyResponse {
+  PolicyDecision decision = 1;
+  string matched_rule_id = 2;
+  string matched_rule_name = 3;
+  string policy_set_name = 4;
+  AuthorizationResult authorization = 5;
+  string reason = 6;
+  int64 evaluation_time_us = 7;
+}
+
+message PolicyDecision {
+  DecisionType type = 1;
+  string description = 2;
+}
+
+enum DecisionType {
+  DECISION_UNSPECIFIED = 0;
+  DECISION_PERMIT = 1;
+  DECISION_DENY = 2;
+  DECISION_QUARANTINE = 3;
+  DECISION_REDIRECT = 4;
+  DECISION_CONTINUE = 5;
+}
+
+message AuthorizationResult {
+  string vlan_id = 1;
+  string vlan_name = 2;
+  string sgt_name = 3;
+  int32 sgt_value = 4;
+  string dacl_name = 5;
+  repeated string dacl_entries = 6;
+  string ipsk = 7;
+  string coa_action = 8;
+  string group_policy = 9;
+  bool voice_domain = 10;
+  string redirect_url = 11;
+  int32 session_timeout = 12;
+  int32 idle_timeout = 13;
+  int32 bandwidth_limit_mbps = 14;
+  repeated string destination_whitelist = 15;
+  string data_flow_policy_id = 16;
+  google.protobuf.Struct vendor_attributes = 17;
+}
+
+message BatchPolicyRequest {
+  repeated PolicyRequest requests = 1;
+}
+
+message BatchPolicyResponse {
+  repeated PolicyResponse responses = 1;
+}

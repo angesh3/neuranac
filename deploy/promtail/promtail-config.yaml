@@ -1,0 +1,57 @@
+# Promtail configuration for NeuraNAC — scrapes Docker container logs
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: docker
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: neuranac-containers
+          __path__: /var/log/containers/*.log
+
+    pipeline_stages:
+      # Parse Docker JSON log format
+      - docker: {}
+
+      # Extract container name from filename
+      - regex:
+          source: filename
+          expression: '/var/log/containers/(?P<container>[^_]+)_.*\.log'
+
+      # Add NeuraNAC-specific labels
+      - labels:
+          container:
+
+      # Drop health check noise
+      - match:
+          selector: '{job="neuranac-containers"}'
+          stages:
+            - regex:
+                expression: '.*"(GET|HEAD) /(health|ready|metrics).*"'
+            - drop:
+                source: ""
+                expression: '.*"(GET|HEAD) /(health|ready|metrics).*"'
+                drop_counter_reason: health_check
+
+  - job_name: neuranac-services
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+        filters:
+          - name: label
+            values: ["com.docker.compose.project=deploy"]
+    relabel_configs:
+      - source_labels: ['__meta_docker_container_name']
+        regex: '/(.*)'
+        target_label: 'container'
+      - source_labels: ['__meta_docker_container_log_stream']
+        target_label: 'logstream'

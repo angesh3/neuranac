@@ -1,0 +1,109 @@
+# OpenTelemetry Collector configuration for NeuraNAC distributed tracing
+# Receives traces from all NeuraNAC services and exports to Tempo/Jaeger.
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+  # Collect RADIUS server metrics via Prometheus scrape
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: neuranac-radius-server
+          scrape_interval: 15s
+          static_configs:
+            - targets: ["radius-server:9100"]
+        - job_name: neuranac-api-gateway
+          scrape_interval: 15s
+          static_configs:
+            - targets: ["api-gateway:8080"]
+              metrics_path: /metrics
+
+processors:
+  batch:
+    send_batch_size: 1024
+    send_batch_max_size: 2048
+    timeout: 5s
+
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 512
+    spike_limit_mib: 128
+
+  # Add NeuraNAC-specific resource attributes
+  resource:
+    attributes:
+      - key: service.namespace
+        value: neuranac
+        action: upsert
+      - key: deployment.environment
+        from_attribute: NeuraNAC_ENV
+        action: upsert
+
+  # Tail-based sampling: keep all error traces, sample 10% of successful ones
+  tail_sampling:
+    decision_wait: 10s
+    num_traces: 50000
+    expected_new_traces_per_sec: 500
+    policies:
+      - name: errors-policy
+        type: status_code
+        status_code:
+          status_codes: [ERROR]
+      - name: latency-policy
+        type: latency
+        latency:
+          threshold_ms: 1000
+      - name: probabilistic-policy
+        type: probabilistic
+        probabilistic:
+          sampling_percentage: 10
+
+exporters:
+  # Tempo for trace storage
+  otlp/tempo:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+
+  # Jaeger (alternative backend)
+  otlp/jaeger:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+
+  # Prometheus for metrics derived from traces
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    namespace: neuranac
+    send_timestamps: true
+    metric_expiration: 5m
+    resource_to_telemetry_conversion:
+      enabled: true
+
+  # Debug logging (disable in production)
+  logging:
+    loglevel: warn
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+
+  zpages:
+    endpoint: 0.0.0.0:55679
+
+service:
+  extensions: [health_check, zpages]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch, resource, tail_sampling]
+      exporters: [otlp/tempo, logging]
+    metrics:
+      receivers: [otlp, prometheus]
+      processors: [memory_limiter, batch, resource]
+      exporters: [prometheus, logging]

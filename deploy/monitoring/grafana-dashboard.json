@@ -1,0 +1,133 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "neuranac-overview",
+    "title": "NeuraNAC - NeuraNAC Overview",
+    "tags": ["neuranac", "nac", "radius"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1, "title": "Active RADIUS Sessions", "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+        "targets": [{"expr": "neuranac_active_sessions", "legendFormat": "sessions"}],
+        "fieldConfig": {"defaults": {"color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 1000}, {"color": "red", "value": 5000}]}}}
+      },
+      {
+        "id": 2, "title": "Auth Requests/sec", "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+        "targets": [{"expr": "rate(neuranac_radius_auth_total[5m])", "legendFormat": "req/s"}]
+      },
+      {
+        "id": 3, "title": "Auth Success Rate", "type": "gauge",
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+        "targets": [{"expr": "rate(neuranac_radius_auth_success_total[5m]) / rate(neuranac_radius_auth_total[5m]) * 100", "legendFormat": "%"}],
+        "fieldConfig": {"defaults": {"min": 0, "max": 100, "thresholds": {"steps": [{"color": "red", "value": null}, {"color": "yellow", "value": 95}, {"color": "green", "value": 99}]}}}
+      },
+      {
+        "id": 4, "title": "AI Risk Alerts", "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
+        "targets": [{"expr": "neuranac_ai_risk_alerts_active", "legendFormat": "alerts"}],
+        "fieldConfig": {"defaults": {"color": {"mode": "thresholds"}, "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 1}, {"color": "red", "value": 5}]}}}
+      },
+      {
+        "id": 5, "title": "Authentication Latency (p99)", "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+        "targets": [
+          {"expr": "histogram_quantile(0.99, rate(neuranac_radius_auth_duration_seconds_bucket[5m]))", "legendFormat": "p99"},
+          {"expr": "histogram_quantile(0.95, rate(neuranac_radius_auth_duration_seconds_bucket[5m]))", "legendFormat": "p95"},
+          {"expr": "histogram_quantile(0.50, rate(neuranac_radius_auth_duration_seconds_bucket[5m]))", "legendFormat": "p50"}
+        ]
+      },
+      {
+        "id": 6, "title": "Auth by EAP Type", "type": "piechart",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+        "targets": [{"expr": "sum by (eap_type) (neuranac_radius_auth_total)", "legendFormat": "{{eap_type}}"}]
+      },
+      {
+        "id": 7, "title": "Shadow AI Detections", "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
+        "targets": [
+          {"expr": "rate(neuranac_ai_shadow_detections_total[1h])", "legendFormat": "detections/hr"},
+          {"expr": "neuranac_ai_shadow_data_upload_bytes / 1024 / 1024", "legendFormat": "upload MB"}
+        ]
+      },
+      {
+        "id": 8, "title": "Twin Node Sync Status", "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
+        "targets": [
+          {"expr": "neuranac_sync_lag_milliseconds", "legendFormat": "sync lag (ms)"},
+          {"expr": "rate(neuranac_sync_changes_replicated_total[5m])", "legendFormat": "changes/s"}
+        ]
+      },
+      {
+        "id": 9, "title": "Policy Engine Evaluations", "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 20},
+        "targets": [
+          {"expr": "rate(neuranac_policy_evaluations_total[5m])", "legendFormat": "evals/s"},
+          {"expr": "histogram_quantile(0.99, rate(neuranac_policy_evaluation_duration_seconds_bucket[5m]))", "legendFormat": "p99 latency"}
+        ]
+      },
+      {
+        "id": 10, "title": "Service Health", "type": "table",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 20},
+        "targets": [{"expr": "up{job=~\"radius-server|api-gateway|policy-engine|ai-engine|sync-engine\"}", "legendFormat": "{{job}}", "format": "table", "instant": true}]
+      },
+      {
+        "id": 11, "title": "API Gateway HTTP Latency", "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 28},
+        "targets": [
+          {"expr": "histogram_quantile(0.99, rate(neuranac_http_request_duration_seconds_bucket{job=\"api-gateway\"}[5m]))", "legendFormat": "p99"},
+          {"expr": "histogram_quantile(0.95, rate(neuranac_http_request_duration_seconds_bucket{job=\"api-gateway\"}[5m]))", "legendFormat": "p95"},
+          {"expr": "histogram_quantile(0.50, rate(neuranac_http_request_duration_seconds_bucket{job=\"api-gateway\"}[5m]))", "legendFormat": "p50"}
+        ]
+      },
+      {
+        "id": 12, "title": "DB Connection Pool", "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 28},
+        "targets": [
+          {"expr": "neuranac_db_pool_checked_out", "legendFormat": "checked out"},
+          {"expr": "neuranac_db_pool_checked_in", "legendFormat": "checked in"},
+          {"expr": "neuranac_db_pool_overflow", "legendFormat": "overflow"}
+        ]
+      },
+      {
+        "id": 13, "title": "Redis Operations", "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 36},
+        "targets": [
+          {"expr": "rate(neuranac_redis_commands_total[5m])", "legendFormat": "ops/s"},
+          {"expr": "neuranac_redis_connected_clients", "legendFormat": "clients"}
+        ]
+      },
+      {
+        "id": 14, "title": "NATS Message Rate", "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 36},
+        "targets": [
+          {"expr": "rate(nats_server_total_messages_received[5m])", "legendFormat": "received/s"},
+          {"expr": "rate(nats_server_total_messages_sent[5m])", "legendFormat": "sent/s"}
+        ]
+      },
+      {
+        "id": 15, "title": "API Error Rate (5xx)", "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 44},
+        "targets": [
+          {"expr": "sum(rate(neuranac_http_requests_total{status=~\"5..\"}[5m])) / sum(rate(neuranac_http_requests_total[5m])) * 100", "legendFormat": "5xx %"}
+        ],
+        "fieldConfig": {"defaults": {"min": 0, "max": 100, "unit": "percent", "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 1}, {"color": "red", "value": 5}]}}}
+      },
+      {
+        "id": 16, "title": "Token Revocations", "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 44},
+        "targets": [{"expr": "rate(neuranac_token_revocations_total[1h])", "legendFormat": "revocations/hr"}]
+      },
+      {
+        "id": 17, "title": "AI Inference Latency", "type": "timeseries",
+        "gridPos": {"h": 8, "w": 6, "x": 18, "y": 44},
+        "targets": [
+          {"expr": "histogram_quantile(0.95, rate(neuranac_ai_inference_duration_seconds_bucket[5m]))", "legendFormat": "p95"}
+        ]
+      }
+    ],
+    "time": {"from": "now-1h", "to": "now"},
+    "refresh": "30s"
+  }
+}

@@ -1,0 +1,21 @@
+# Cloud site in hybrid mode (paired with on-prem site)
+# NeuraNAC Bridge on cloud side uses NeuraNAC-to-NeuraNAC adapter to talk to on-prem Bridge
+global:
+  siteType: cloud
+  siteId: "00000000-0000-0000-0000-000000000002"
+  deploymentMode: hybrid
+  legacyNacEnabled: true  # set to false if no NeuraNAC
+  peerApiUrl: "https://onprem-neuranac.customer.local"
+  bridgeUrl: "http://neuranac-bridge:8090"
+
+syncEngine:
+  peerAddress: "onprem-sync.customer.local:9090"
+
+neuranacBridge:
+  enabled: true
+  simulated: false
+  adapters:
+    legacy_nac:
+      enabled: false  # Legacy NAC adapter runs on-prem only
+    neuranacToNeuranac:
+      enabled: true

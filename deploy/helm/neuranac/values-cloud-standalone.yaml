@@ -1,0 +1,14 @@
+# Scenario 2: Cloud only, no NeuraNAC
+global:
+  siteType: cloud
+  deploymentMode: standalone
+  legacyNacEnabled: false
+  peerApiUrl: ""
+  bridgeUrl: "http://neuranac-bridge:8090"
+
+syncEngine:
+  peerAddress: ""
+
+neuranacBridge:
+  enabled: true
+  simulated: true

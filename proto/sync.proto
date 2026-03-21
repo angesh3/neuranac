@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+package neuranac.sync.v1;
+
+option go_package = "github.com/neuranac/services/sync-engine/internal/pb";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+// SyncService handles bidirectional replication between twin nodes
+service SyncService {
+  // Bidirectional config sync stream
+  rpc SyncConfig(stream ConfigChange) returns (stream ConfigAck);
+
+  // Push session data to peer (one-way)
+  rpc PushSessions(stream SessionEvent) returns (PushAck);
+
+  // Push audit data to peer (one-way, append-only)
+  rpc PushAuditLogs(stream AuditEntry) returns (PushAck);
+
+  // Health check and node status
+  rpc HealthCheck(HealthRequest) returns (HealthResponse);
+
+  // Force full resync
+  rpc FullResync(ResyncRequest) returns (stream ConfigChange);
+
+  // Get sync status
+  rpc GetSyncStatus(SyncStatusRequest) returns (SyncStatusResponse);
+}
+
+// ConfigChange represents a single configuration change to replicate
+message ConfigChange {
+  string id = 1;
+  string entity_type = 2;
+  string entity_id = 3;
+  Operation operation = 4;
+  google.protobuf.Struct data = 5;
+  string tenant_id = 6;
+  string source_node = 7;
+  VectorClock vector_clock = 8;
+  google.protobuf.Timestamp timestamp = 9;
+  string scope = 10; // "global", "onprem", "cloud"
+}
+
+message ConfigAck {
+  string change_id = 1;
+  AckStatus status = 2;
+  string conflict_resolution = 3;
+  VectorClock merged_clock = 4;
+}
+
+message SessionEvent {
+  string session_id = 1;
+  string tenant_id = 2;
+  SessionEventType event_type = 3;
+  string endpoint_mac = 4;
+  string username = 5;
+  string nas_ip = 6;
+  string nas_port = 7;
+  string eap_type = 8;
+  string auth_result = 9;
+  string vlan_id = 10;
+  string sgt = 11;
+  string auth_profile = 12;
+  int32 risk_score = 13;
+  string ai_agent_id = 14;
+  google.protobuf.Struct attributes = 15;
+  google.protobuf.Timestamp timestamp = 16;
+}
+
+message AuditEntry {
+  string id = 1;
+  string tenant_id = 2;
+  string actor = 3;
+  string action = 4;
+  string entity_type = 5;
+  string entity_id = 6;
+  google.protobuf.Struct before = 7;
+  google.protobuf.Struct after = 8;
+  string source_ip = 9;
+  google.protobuf.Timestamp timestamp = 10;
+  string prev_hash = 11;
+  string entry_hash = 12;
+}
+
+message PushAck {
+  int64 received_count = 1;
+  int64 processed_count = 2;
+  repeated string failed_ids = 3;
+}
+
+message HealthRequest {
+  string node_id = 1;
+  google.protobuf.Timestamp sent_at = 2;
+}
+
+message HealthResponse {
+  string node_id = 1;
+  NodeStatus status = 2;
+  string role = 3;
+  int64 uptime_seconds = 4;
+  int64 active_sessions = 5;
+  int64 sync_lag_ms = 6;
+  int64 pending_changes = 7;
+  google.protobuf.Timestamp responded_at = 8;
+}
+
+message ResyncRequest {
+  string requesting_node = 1;
+  repeated string entity_types = 2;
+  string tenant_id = 3;
+}
+
+message SyncStatusRequest {
+  string node_id = 1;
+}
+
+message SyncStatusResponse {
+  string node_id = 1;
+  string peer_node_id = 2;
+  bool peer_connected = 3;
+  int64 replication_lag_ms = 4;
+  int64 pending_outbound = 5;
+  int64 pending_inbound = 6;
+  int64 conflicts_last_24h = 7;
+  int64 bytes_synced_last_24h = 8;
+  google.protobuf.Timestamp last_sync_at = 9;
+}
+
+message VectorClock {
+  map<string, int64> clocks = 1;
+}
+
+enum Operation {
+  OPERATION_UNSPECIFIED = 0;
+  OPERATION_CREATE = 1;
+  OPERATION_UPDATE = 2;
+  OPERATION_DELETE = 3;
+}
+
+enum AckStatus {
+  ACK_STATUS_UNSPECIFIED = 0;
+  ACK_STATUS_OK = 1;
+  ACK_STATUS_CONFLICT_RESOLVED = 2;
+  ACK_STATUS_REJECTED = 3;
+}
+
+enum SessionEventType {
+  SESSION_EVENT_UNSPECIFIED = 0;
+  SESSION_EVENT_AUTH_START = 1;
+  SESSION_EVENT_AUTH_SUCCESS = 2;
+  SESSION_EVENT_AUTH_FAILURE = 3;
+  SESSION_EVENT_ACCOUNTING_START = 4;
+  SESSION_EVENT_ACCOUNTING_UPDATE = 5;
+  SESSION_EVENT_ACCOUNTING_STOP = 6;
+  SESSION_EVENT_COA_SENT = 7;
+  SESSION_EVENT_DISCONNECT = 8;
+}
+
+enum NodeStatus {
+  NODE_STATUS_UNSPECIFIED = 0;
+  NODE_STATUS_HEALTHY = 1;
+  NODE_STATUS_DEGRADED = 2;
+  NODE_STATUS_UNREACHABLE = 3;
+  NODE_STATUS_SYNCING = 4;
+}

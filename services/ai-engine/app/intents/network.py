@@ -1,0 +1,26 @@
+"""Network devices, endpoints, and topology intents."""
+
+NETWORK_INTENTS = [
+    {"intent": "list_devices", "patterns": ["list devices", "show devices", "network devices", "list nad", "show nad", "all devices"],
+     "method": "GET", "path": "/api/v1/network-devices/", "description": "List all network devices"},
+    {"intent": "add_device", "patterns": ["add device", "add switch", "add nad", "register device", "new device", "new switch"],
+     "method": "POST", "path": "/api/v1/network-devices/", "description": "Add a new network device",
+     "extract_fields": ["name", "ip_address", "device_type", "vendor", "shared_secret"]},
+    {"intent": "discover_devices", "patterns": ["discover devices", "scan network", "find devices", "auto discover"],
+     "method": "POST", "path": "/api/v1/network-devices/discover", "description": "Discover network devices on a subnet",
+     "extract_fields": ["subnet"]},
+    {"intent": "list_endpoints", "patterns": ["list endpoints", "show endpoints", "all endpoints", "connected devices"],
+     "method": "GET", "path": "/api/v1/endpoints/", "description": "List all endpoints"},
+    {"intent": "profile_endpoint", "patterns": ["profile endpoint", "identify device", "classify device", "run profiling"],
+     "method": "POST", "path": "/api/v1/endpoints/{id}/profile", "description": "AI-profile an endpoint",
+     "extract_fields": ["id"]},
+    {"intent": "show_topology", "patterns": ["topology", "show topology", "network topology", "network map", "architecture", "component view",
+                                                "service mesh", "infrastructure map", "show architecture", "visualize network"],
+     "method": "GET", "path": "/api/v1/topology/", "description": "Show network topology and component map"},
+    {"intent": "topology_health", "patterns": ["topology health", "service health matrix", "health matrix", "component health"],
+     "method": "GET", "path": "/api/v1/topology/health-matrix", "description": "Show topology health matrix"},
+    {"intent": "topology_dataflow", "patterns": ["data flow", "radius flow", "auth flow", "request flow", "packet flow", "trace auth"],
+     "method": "GET", "path": "/api/v1/topology/?view=dataflow", "description": "Show RADIUS authentication data flow"},
+    {"intent": "topology_legacy_nac", "patterns": ["legacy nac topology", "legacy nac integration map", "legacy nac architecture"],
+     "method": "GET", "path": "/api/v1/topology/?view=legacy_nac", "description": "Show Legacy NAC integration topology"},
+]

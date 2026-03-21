@@ -1,0 +1,35 @@
+"""API Router package - all route modules"""
+from app.routers import (
+    auth,
+    policies,
+    network_devices,
+    endpoints,
+    sessions,
+    identity_sources,
+    certificates,
+    segmentation,
+    guest,
+    posture,
+    ai_agents,
+    ai_data_flow,
+    ai_chat,
+    nodes,
+    admin,
+    licenses,
+    audit,
+    setup,
+    diagnostics,
+    health,
+    privacy,
+    siem,
+    webhooks,
+    websocket_events,
+)
+
+__all__ = [
+    "auth", "policies", "network_devices", "endpoints", "sessions",
+    "identity_sources", "certificates", "segmentation", "guest", "posture",
+    "ai_agents", "ai_data_flow", "ai_chat", "nodes", "admin", "licenses", "audit",
+    "setup", "diagnostics", "health", "privacy", "siem", "webhooks",
+    "websocket_events",
+]

@@ -1,0 +1,178 @@
+# NeuraNAC Hybrid Dual-Stack Overlay
+# Usage: docker compose -f docker-compose.yml -f docker-compose.hybrid.yml up -d
+#
+# This overlay adds a second NeuraNAC "cloud" stack alongside the default "on-prem" stack.
+# It enables testing of Scenarios 1 (NeuraNAC + Hybrid) and 4 (Hybrid no NeuraNAC) locally.
+#
+# The on-prem stack (from docker-compose.yml) runs on default ports.
+# The cloud stack runs on offset ports (+1000 for API, +10 for RADIUS).
+#
+# Prerequisites:
+#   1. Copy .env.example to .env and configure hybrid vars
+#   2. Generate shared secret: export FEDERATION_SHARED_SECRET=$(openssl rand -hex 32)
+#   3. Run: docker compose -f docker-compose.yml -f docker-compose.hybrid.yml [--profile legacy-nac] up -d
+
+services:
+  # ── Override on-prem stack to enable hybrid mode ──────────────────────
+  api-gateway:
+    environment:
+      - DEPLOYMENT_MODE=hybrid
+      - NEURANAC_SITE_TYPE=onprem
+      - NEURANAC_SITE_ID=00000000-0000-0000-0000-000000000001
+      - NEURANAC_PEER_API_URL=http://api-gateway-cloud:8080
+      - FEDERATION_SHARED_SECRET=${FEDERATION_SHARED_SECRET:-dev_federation_secret_change_me_in_prod}
+
+  radius-server:
+    environment:
+      - DEPLOYMENT_MODE=hybrid
+      - NEURANAC_SITE_TYPE=onprem
+      - NEURANAC_SITE_ID=00000000-0000-0000-0000-000000000001
+
+  sync-engine:
+    environment:
+      - DEPLOYMENT_MODE=hybrid
+      - NEURANAC_SITE_TYPE=onprem
+      - NEURANAC_SITE_ID=00000000-0000-0000-0000-000000000001
+      - NEURANAC_PEER_API_URL=http://api-gateway-cloud:8080
+
+  policy-engine:
+    environment:
+      - DEPLOYMENT_MODE=hybrid
+      - NEURANAC_SITE_TYPE=onprem
+      - NEURANAC_SITE_ID=00000000-0000-0000-0000-000000000001
+
+  # ── Cloud NeuraNAC Stack (Site B) ──────────────────────────────────────────
+
+  api-gateway-cloud:
+    build:
+      context: ../services/api-gateway
+      dockerfile: Dockerfile
+    container_name: neuranac-api-cloud
+    ports:
+      - "9080:8080"
+    environment:
+      - NeuraNAC_ENV=development
+      - NEURANAC_NODE_ID=twin-b
+      - NEURANAC_SITE_TYPE=cloud
+      - NEURANAC_SITE_ID=00000000-0000-0000-0000-000000000002
+      - DEPLOYMENT_MODE=hybrid
+      - LEGACY_NAC_ENABLED=${LEGACY_NAC_ENABLED:-false}
+      - NEURANAC_PEER_API_URL=http://api-gateway:8080
+      - BRIDGE_CONNECTOR_URL=
+      - FEDERATION_SHARED_SECRET=${FEDERATION_SHARED_SECRET:-dev_federation_secret_change_me_in_prod}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=neuranac
+      - POSTGRES_USER=neuranac
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-neuranac_dev_password}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-neuranac_dev_password}
+      - NATS_URL=nats://neuranac:${NATS_PASSWORD:-neuranac_dev_password}@nats:4222
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  radius-server-cloud:
+    build:
+      context: ../services/radius-server
+      dockerfile: Dockerfile
+    container_name: neuranac-radius-cloud
+    ports:
+      - "1822:1812/udp"
+      - "1823:1813/udp"
+    environment:
+      - NeuraNAC_ENV=development
+      - NEURANAC_NODE_ID=twin-b
+      - NEURANAC_SITE_TYPE=cloud
+      - NEURANAC_SITE_ID=00000000-0000-0000-0000-000000000002
+      - DEPLOYMENT_MODE=hybrid
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=neuranac
+      - POSTGRES_USER=neuranac
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-neuranac_dev_password}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-neuranac_dev_password}
+      - NATS_URL=nats://neuranac:${NATS_PASSWORD:-neuranac_dev_password}@nats:4222
+      - POLICY_ENGINE_GRPC=policy-engine-cloud:9091
+      - HEALTH_PORT=9100
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+
+  policy-engine-cloud:
+    build:
+      context: ../services/policy-engine
+      dockerfile: Dockerfile
+    container_name: neuranac-policy-cloud
+    ports:
+      - "8092:8082"
+    environment:
+      - NeuraNAC_ENV=development
+      - NEURANAC_SITE_TYPE=cloud
+      - NEURANAC_SITE_ID=00000000-0000-0000-0000-000000000002
+      - DEPLOYMENT_MODE=hybrid
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=neuranac
+      - POSTGRES_USER=neuranac
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-neuranac_dev_password}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-neuranac_dev_password}
+      - NATS_URL=nats://neuranac:${NATS_PASSWORD:-neuranac_dev_password}@nats:4222
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  sync-engine-cloud:
+    build:
+      context: ../services/sync-engine
+      dockerfile: Dockerfile
+    container_name: neuranac-sync-cloud
+    environment:
+      - NeuraNAC_ENV=development
+      - NEURANAC_NODE_ID=twin-b
+      - NEURANAC_SITE_TYPE=cloud
+      - NEURANAC_SITE_ID=00000000-0000-0000-0000-000000000002
+      - DEPLOYMENT_MODE=hybrid
+      - NEURANAC_PEER_API_URL=http://api-gateway:8080
+      - SYNC_PEER_ADDRESS=sync-engine:9090
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=neuranac
+      - POSTGRES_USER=neuranac
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-neuranac_dev_password}
+      - NATS_URL=nats://neuranac:${NATS_PASSWORD:-neuranac_dev_password}@nats:4222
+    depends_on:
+      postgres:
+        condition: service_healthy
+      nats:
+        condition: service_healthy
+
+  web-cloud:
+    build:
+      context: ../web
+      dockerfile: Dockerfile
+    container_name: neuranac-web-cloud
+    ports:
+      - "3002:3001"
+    environment:
+      - VITE_API_URL=http://localhost:9080
+    depends_on:
+      - api-gateway-cloud

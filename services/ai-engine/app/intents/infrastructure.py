@@ -1,0 +1,27 @@
+"""Infrastructure: nodes, sites, connectors, NeuraNAC, SIEM, diagnostics intents."""
+
+INFRA_INTENTS = [
+    {"intent": "list_legacy_nac", "patterns": ["legacy nac connection", "show legacy nac", "list legacy nac", "legacy connection"],
+     "method": "GET", "path": "/api/v1/legacy-nac/connections", "description": "List legacy connections"},
+    {"intent": "legacy_nac_summary", "patterns": ["legacy nac summary", "legacy nac overview", "legacy nac status"],
+     "method": "GET", "path": "/api/v1/legacy-nac/summary", "description": "NeuraNAC integration summary"},
+    {"intent": "troubleshoot", "patterns": ["troubleshoot", "why.*fail", "debug", "diagnose", "root cause", "investigate"],
+     "method": "POST", "path": "/api/v1/diagnostics/troubleshoot", "description": "AI troubleshooting",
+     "extract_fields": ["target", "issue_type"]},
+    {"intent": "radius_log", "patterns": ["radius log", "live log", "auth log", "radius live"],
+     "method": "GET", "path": "/api/v1/diagnostics/radius-live-log", "description": "Show RADIUS live log"},
+    {"intent": "list_siem", "patterns": ["siem", "syslog", "log forward", "siem destination"],
+     "method": "GET", "path": "/api/v1/siem/destinations", "description": "List SIEM destinations"},
+    {"intent": "list_nodes", "patterns": ["list node", "twin node", "ha status", "high availability", "cluster"],
+     "method": "GET", "path": "/api/v1/nodes/", "description": "List twin nodes"},
+    {"intent": "sync_status", "patterns": ["sync status", "replication status", "node sync"],
+     "method": "GET", "path": "/api/v1/nodes/sync-status", "description": "Check node sync status"},
+    {"intent": "list_sites", "patterns": ["list site", "show site", "all site", "deployment site", "onprem site", "cloud site"],
+     "method": "GET", "path": "/api/v1/sites/", "description": "List all deployment sites"},
+    {"intent": "peer_status", "patterns": ["peer status", "peer site", "peer health", "remote site", "twin site"],
+     "method": "GET", "path": "/api/v1/sites/peer/status", "description": "Check peer site status"},
+    {"intent": "list_connectors", "patterns": ["list connector", "legacy nac connector", "show connector", "connector status"],
+     "method": "GET", "path": "/api/v1/connectors/", "description": "List bridge connectors"},
+    {"intent": "deployment_config", "patterns": ["deployment config", "deployment mode", "hybrid mode", "standalone mode", "ui config"],
+     "method": "GET", "path": "/api/v1/config/ui", "description": "Show deployment configuration"},
+]

@@ -1,0 +1,123 @@
+{{- if .Values.ingestionCollector.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-ingestion-collector
+  labels:
+    app.kubernetes.io/name: ingestion-collector
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.ingestionCollector.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ingestion-collector
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ingestion-collector
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: ingestion-collector
+          image: "{{ .Values.ingestionCollector.image.repository }}:{{ .Values.ingestionCollector.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.ingestionCollector.image.pullPolicy }}
+          ports:
+            - containerPort: 1162
+              protocol: UDP
+              name: snmp-trap
+            - containerPort: 1514
+              protocol: UDP
+              name: syslog
+            - containerPort: 2055
+              protocol: UDP
+              name: netflow
+            - containerPort: 6767
+              protocol: UDP
+              name: dhcp-snoop
+            - containerPort: 9102
+              protocol: TCP
+              name: health
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-env
+          env:
+            - name: NeuraNAC_ENV
+              value: {{ .Values.global.environment }}
+            - name: NEURANAC_NODE_ID
+              value: {{ .Values.global.nodeId }}
+            - name: NEURANAC_SITE_TYPE
+              value: {{ .Values.global.siteType }}
+            - name: NEURANAC_SITE_ID
+              value: {{ .Values.global.siteId | quote }}
+            - name: DEPLOYMENT_MODE
+              value: {{ .Values.global.deploymentMode }}
+            - name: SNMP_TRAP_PORT
+              value: "1162"
+            - name: SYSLOG_PORT
+              value: "1514"
+            - name: NETFLOW_PORT
+              value: "2055"
+            - name: DHCP_SNOOP_PORT
+              value: "6767"
+            - name: HEALTH_PORT
+              value: "9102"
+            - name: SNMP_COMMUNITY
+              value: {{ .Values.ingestionCollector.snmpCommunity | default "public" | quote }}
+            - name: SNMP_POLL_INTERVAL
+              value: {{ .Values.ingestionCollector.snmpPollInterval | default "300" | quote }}
+            - name: BATCH_SIZE
+              value: {{ .Values.ingestionCollector.batchSize | default "100" | quote }}
+            - name: FLUSH_INTERVAL_MS
+              value: {{ .Values.ingestionCollector.flushIntervalMs | default "1000" | quote }}
+          resources:
+            {{- toYaml .Values.ingestionCollector.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: health
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: health
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /health
+              port: health
+            failureThreshold: 30
+            periodSeconds: 2
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-ingestion-collector
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 1162
+      targetPort: snmp-trap
+      protocol: UDP
+      name: snmp-trap
+    - port: 1514
+      targetPort: syslog
+      protocol: UDP
+      name: syslog
+    - port: 2055
+      targetPort: netflow
+      protocol: UDP
+      name: netflow
+    - port: 6767
+      targetPort: dhcp-snoop
+      protocol: UDP
+      name: dhcp-snoop
+    - port: 9102
+      targetPort: health
+      protocol: TCP
+      name: health
+  selector:
+    app.kubernetes.io/name: ingestion-collector
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}

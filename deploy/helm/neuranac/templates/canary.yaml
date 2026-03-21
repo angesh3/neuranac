@@ -1,0 +1,166 @@
+{{- if .Values.canary.enabled }}
+# ─── Canary Deployment: API Gateway ─────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-api-gateway-canary
+  labels:
+    app.kubernetes.io/name: api-gateway
+    app.kubernetes.io/variant: canary
+spec:
+  replicas: {{ .Values.canary.apiGateway.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api-gateway
+      app.kubernetes.io/variant: canary
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: api-gateway
+        app.kubernetes.io/variant: canary
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+    spec:
+      containers:
+        - name: api-gateway
+          image: "{{ .Values.apiGateway.image.repository }}:{{ .Values.canary.apiGateway.imageTag | default .Chart.AppVersion }}"
+          ports:
+            - containerPort: {{ .Values.apiGateway.port }}
+              name: http
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-env
+          env:
+            - name: NeuraNAC_ENV
+              value: {{ .Values.global.environment }}
+            - name: NEURANAC_NODE_ID
+              value: {{ .Values.global.nodeId }}-canary
+          resources:
+            {{- toYaml .Values.apiGateway.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-api-gateway-canary
+  labels:
+    app.kubernetes.io/name: api-gateway
+    app.kubernetes.io/variant: canary
+spec:
+  ports:
+    - port: 8080
+      targetPort: http
+      name: http
+  selector:
+    app.kubernetes.io/name: api-gateway
+    app.kubernetes.io/variant: canary
+---
+# ─── Canary Deployment: RADIUS Server ──────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-radius-server-canary
+  labels:
+    app.kubernetes.io/name: radius-server
+    app.kubernetes.io/variant: canary
+spec:
+  replicas: {{ .Values.canary.radiusServer.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: radius-server
+      app.kubernetes.io/variant: canary
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: radius-server
+        app.kubernetes.io/variant: canary
+    spec:
+      containers:
+        - name: radius-server
+          image: "{{ .Values.radiusServer.image.repository }}:{{ .Values.canary.radiusServer.imageTag | default .Chart.AppVersion }}"
+          ports:
+            - containerPort: {{ .Values.radiusServer.ports.auth }}
+              protocol: UDP
+              name: radius-auth
+            - containerPort: {{ .Values.radiusServer.ports.acct }}
+              protocol: UDP
+              name: radius-acct
+            - containerPort: {{ .Values.radiusServer.ports.health }}
+              name: health
+          envFrom:
+            - secretRef:
+                name: {{ .Release.Name }}-env
+          env:
+            - name: NEURANAC_NODE_ID
+              value: {{ .Values.global.nodeId }}-canary
+          resources:
+            {{- toYaml .Values.radiusServer.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: health
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: health
+            initialDelaySeconds: 5
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-radius-server-canary
+  labels:
+    app.kubernetes.io/name: radius-server
+    app.kubernetes.io/variant: canary
+spec:
+  ports:
+    - port: 1812
+      targetPort: radius-auth
+      protocol: UDP
+      name: radius-auth
+    - port: 1813
+      targetPort: radius-acct
+      protocol: UDP
+      name: radius-acct
+    - port: 9100
+      targetPort: health
+      name: health
+  selector:
+    app.kubernetes.io/name: radius-server
+    app.kubernetes.io/variant: canary
+{{- if .Values.canary.trafficSplit }}
+---
+# ─── Traffic Split (Nginx Ingress weight-based canary) ─────────────────────
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Release.Name }}-canary-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/canary: "true"
+    nginx.ingress.kubernetes.io/canary-weight: "{{ .Values.canary.weight | default 10 }}"
+spec:
+  ingressClassName: {{ .Values.ingress.className | default "nginx" }}
+  rules:
+    - host: {{ (index .Values.ingress.hosts 0).host | default "neuranac.example.com" }}
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}-api-gateway-canary
+                port:
+                  name: http
+{{- end }}
+{{- end }}

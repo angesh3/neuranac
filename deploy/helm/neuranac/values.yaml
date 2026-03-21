@@ -1,0 +1,257 @@
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  nodeRole: primary
+  nodeId: twin-a
+  siteType: onprem
+  siteId: "00000000-0000-0000-0000-000000000001"
+  deploymentMode: standalone  # standalone | hybrid
+  legacyNacEnabled: false
+  peerApiUrl: ""
+  neuranacConnectorUrl: ""  # deprecated — use bridgeUrl
+  bridgeUrl: ""
+  federationSharedSecret: ""
+  bridgeTrustEnforce: false
+  caKeyPath: ""
+  caCertPath: ""
+  environment: production
+
+radiusServer:
+  replicaCount: 2
+  image:
+    repository: neuranac/radius-server
+    tag: ""  # defaults to Chart.AppVersion
+    pullPolicy: IfNotPresent
+  resources:
+    requests: { cpu: 500m, memory: 512Mi }
+    limits: { cpu: 2000m, memory: 2Gi }
+  ports:
+    auth: 1812
+    acct: 1813
+    radsec: 2083
+    coa: 3799
+    tacacs: 49
+    health: 9100
+  hostNetwork: false
+
+apiGateway:
+  replicaCount: 2
+  image:
+    repository: neuranac/api-gateway
+    tag: ""  # defaults to Chart.AppVersion
+    pullPolicy: IfNotPresent
+  resources:
+    requests: { cpu: 250m, memory: 256Mi }
+    limits: { cpu: 1000m, memory: 1Gi }
+  port: 8080
+
+policyEngine:
+  replicaCount: 2
+  image:
+    repository: neuranac/policy-engine
+    tag: ""  # defaults to Chart.AppVersion
+    pullPolicy: IfNotPresent
+  resources:
+    requests: { cpu: 250m, memory: 256Mi }
+    limits: { cpu: 1000m, memory: 1Gi }
+  ports:
+    http: 8082
+    grpc: 9091
+
+aiEngine:
+  replicaCount: 1
+  image:
+    repository: neuranac/ai-engine
+    tag: ""  # defaults to Chart.AppVersion
+    pullPolicy: IfNotPresent
+  resources:
+    requests: { cpu: 500m, memory: 512Mi }
+    limits: { cpu: 2000m, memory: 4Gi }
+  port: 8081
+  llm:
+    apiUrl: ""   # set to http://<release>-ollama:11434/api/generate when ollama.enabled=true
+    model: "llama3.1:8b"
+
+syncEngine:
+  replicaCount: 1
+  image:
+    repository: neuranac/sync-engine
+    tag: ""  # defaults to Chart.AppVersion
+    pullPolicy: IfNotPresent
+  resources:
+    requests: { cpu: 250m, memory: 256Mi }
+    limits: { cpu: 1000m, memory: 1Gi }
+  ports:
+    grpc: 9090
+    health: 9100
+  peerAddress: ""
+
+neuranacBridge:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: neuranac/neuranac-bridge
+    tag: ""
+    pullPolicy: IfNotPresent
+  resources:
+    requests: { cpu: 100m, memory: 128Mi }
+    limits: { cpu: 500m, memory: 512Mi }
+  port: 8090
+  simulated: true
+  adapters:
+    legacy_nac:
+      enabled: false
+      hostname: "legacy-nac.local"
+    neuranacToNeuranac:
+      enabled: false
+    genericRest:
+      enabled: false
+
+ingestionCollector:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: neuranac/ingestion-collector
+    tag: ""
+    pullPolicy: IfNotPresent
+  resources:
+    requests: { cpu: 250m, memory: 256Mi }
+    limits: { cpu: 1000m, memory: 1Gi }
+  snmpCommunity: "public"
+  snmpPollInterval: "300"
+  batchSize: "100"
+  flushIntervalMs: "1000"
+
+web:
+  replicaCount: 2
+  image:
+    repository: neuranac/web
+    tag: ""  # defaults to Chart.AppVersion
+    pullPolicy: IfNotPresent
+  resources:
+    requests: { cpu: 100m, memory: 128Mi }
+    limits: { cpu: 500m, memory: 512Mi }
+  port: 443
+
+pgbouncer:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: edoburu/pgbouncer
+    tag: "1.22.0"
+  resources:
+    requests: { cpu: 100m, memory: 64Mi }
+    limits: { cpu: 500m, memory: 256Mi }
+  maxClientConn: 200
+  defaultPoolSize: 20
+  minPoolSize: 5
+
+postgresql:
+  enabled: true
+  auth:
+    database: neuranac
+    username: neuranac
+    existingSecret: neuranac-db-secret
+  primary:
+    persistence:
+      size: 50Gi
+  resources:
+    requests: { cpu: 500m, memory: 1Gi }
+
+redis:
+  enabled: true
+  auth:
+    existingSecret: neuranac-redis-secret
+  master:
+    persistence:
+      size: 10Gi
+
+nats:
+  enabled: true
+  auth:
+    enabled: true
+    user: neuranac
+    existingSecret: neuranac-nats-secret
+  jetstream:
+    enabled: true
+    memStorage:
+      size: 1Gi
+    fileStorage:
+      size: 10Gi
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  hosts:
+    - host: neuranac.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+          service: web
+        - path: /api
+          pathType: Prefix
+          service: api-gateway
+  tls:
+    - secretName: neuranac-tls
+      hosts: [neuranac.example.com]
+
+autoscaling:
+  enabled: true
+  apiGateway:
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPU: 70
+    targetMemory: 80
+  radiusServer:
+    minReplicas: 2
+    maxReplicas: 8
+    targetCPU: 60
+  aiEngine:
+    minReplicas: 1
+    maxReplicas: 4
+    targetCPU: 75
+
+podDisruptionBudget:
+  enabled: true
+  apiGateway:
+    minAvailable: 1
+  radiusServer:
+    minAvailable: 1
+  policyEngine:
+    minAvailable: 1
+
+networkPolicy:
+  enabled: true
+
+canary:
+  enabled: false
+  weight: 10  # percentage of traffic to canary (Nginx Ingress)
+  trafficSplit: false  # enable Ingress-based traffic splitting
+  apiGateway:
+    replicaCount: 1
+    imageTag: ""  # override tag for canary; defaults to Chart.AppVersion
+  radiusServer:
+    replicaCount: 1
+    imageTag: ""
+
+ollama:
+  enabled: false                        # Set to true to deploy local LLM
+  image:
+    repository: ollama/ollama
+    tag: latest
+  model: "llama3.1:8b"
+  resources:
+    requests: { cpu: "2", memory: 6Gi }
+    limits: { cpu: "4", memory: 8Gi }
+    # Uncomment for GPU acceleration:
+    # nvidia.com/gpu: "1"
+  persistence:
+    enabled: true
+    size: 20Gi
+    storageClass: ""                    # Use default storage class
+
+monitoring:
+  enabled: true
+  serviceMonitor: true

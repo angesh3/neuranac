@@ -1,0 +1,150 @@
+syntax = "proto3";
+
+package neuranac.ai.v1;
+
+option go_package = "github.com/neuranac/services/radius-server/internal/pb";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+// AIService provides ML-powered capabilities
+service AIService {
+  // Profile an endpoint using ML model
+  rpc ProfileEndpoint(ProfileRequest) returns (ProfileResponse);
+
+  // Compute risk score for a session
+  rpc ComputeRiskScore(RiskScoreRequest) returns (RiskScoreResponse);
+
+  // Check if traffic matches shadow AI service
+  rpc DetectShadowAI(ShadowAIRequest) returns (ShadowAIResponse);
+
+  // Natural language to policy translation
+  rpc TranslatePolicy(NLPolicyRequest) returns (NLPolicyResponse);
+
+  // AI-powered troubleshooting
+  rpc Troubleshoot(TroubleshootRequest) returns (TroubleshootResponse);
+}
+
+message ProfileRequest {
+  string mac_address = 1;
+  string tenant_id = 2;
+  google.protobuf.Struct radius_attributes = 3;
+  google.protobuf.Struct dhcp_attributes = 4;
+  string oui_vendor = 5;
+  repeated string dns_queries = 6;
+  repeated int32 ports_used = 7;
+}
+
+message ProfileResponse {
+  string device_type = 1;
+  string vendor = 2;
+  string os = 3;
+  double confidence = 4;
+  repeated ProfileCandidate top_candidates = 5;
+  string model_version = 6;
+  int64 inference_time_us = 7;
+}
+
+message ProfileCandidate {
+  string device_type = 1;
+  double confidence = 2;
+}
+
+message RiskScoreRequest {
+  string session_id = 1;
+  string tenant_id = 2;
+  string username = 3;
+  string endpoint_mac = 4;
+  string nas_ip = 5;
+  google.protobuf.Timestamp auth_time = 6;
+  string eap_type = 7;
+  string identity_source = 8;
+  repeated string user_groups = 9;
+  string posture_status = 10;
+  string device_type = 11;
+  bool running_local_llm = 12;
+  string ai_agent_id = 13;
+  int32 ai_delegation_depth = 14;
+  string ai_service_destination = 15;
+  double ai_data_upload_mb = 16;
+  bool shadow_ai_detected = 17;
+  int32 failed_auth_count_24h = 18;
+}
+
+message RiskScoreResponse {
+  int32 total_score = 1;
+  string risk_level = 2;   // "low", "medium", "high", "critical"
+  int32 behavioral_score = 3;
+  int32 identity_score = 4;
+  int32 endpoint_score = 5;
+  int32 ai_activity_score = 6;
+  repeated RiskFactor factors = 7;
+  google.protobuf.Timestamp computed_at = 8;
+}
+
+message RiskFactor {
+  string category = 1;
+  string description = 2;
+  int32 score_contribution = 3;
+}
+
+message ShadowAIRequest {
+  string tenant_id = 1;
+  string endpoint_mac = 2;
+  string username = 3;
+  string destination_domain = 4;
+  string sni = 5;
+  string http_path = 6;
+  int64 payload_size_bytes = 7;
+}
+
+message ShadowAIResponse {
+  bool is_ai_service = 1;
+  string service_name = 2;
+  string service_category = 3;
+  bool is_approved = 4;
+  string risk_level = 5;
+  string recommended_action = 6;
+}
+
+message NLPolicyRequest {
+  string tenant_id = 1;
+  string natural_language = 2;
+  string context = 3;
+}
+
+message NLPolicyResponse {
+  bool success = 1;
+  repeated GeneratedRule rules = 2;
+  string explanation = 3;
+  string confidence = 4;
+}
+
+message GeneratedRule {
+  string name = 1;
+  int32 priority = 2;
+  repeated RuleCondition conditions = 3;
+  string authorization_profile = 4;
+  string action = 5;
+}
+
+message RuleCondition {
+  string attribute = 1;
+  string operator = 2;
+  string value = 3;
+}
+
+message TroubleshootRequest {
+  string tenant_id = 1;
+  string query = 2;
+  string session_id = 3;
+  string endpoint_mac = 4;
+  string username = 5;
+}
+
+message TroubleshootResponse {
+  string root_cause = 1;
+  string explanation = 2;
+  repeated string recommended_fixes = 3;
+  repeated string evidence = 4;
+}

@@ -1,0 +1,25 @@
+"""Navigation intents for the AI Mode UI."""
+
+NAVIGATION_INTENTS = {
+    "go_dashboard": {"patterns": ["go to dashboard", "open dashboard", "navigate.*dashboard"], "route": "/"},
+    "go_policies": {"patterns": ["go to policies", "open policies", "navigate.*policies"], "route": "/policies"},
+    "go_devices": {"patterns": ["go to devices", "open devices", "navigate.*device"], "route": "/network-devices"},
+    "go_endpoints": {"patterns": ["go to endpoint", "open endpoint", "navigate.*endpoint"], "route": "/endpoints"},
+    "go_sessions": {"patterns": ["go to session", "open session", "navigate.*session"], "route": "/sessions"},
+    "go_identity": {"patterns": ["go to identity", "open identity", "navigate.*identity"], "route": "/identity"},
+    "go_certs": {"patterns": ["go to cert", "open cert", "navigate.*cert"], "route": "/certificates"},
+    "go_segmentation": {"patterns": ["go to segment", "open segment", "navigate.*segment"], "route": "/segmentation"},
+    "go_guest": {"patterns": ["go to guest", "open guest", "navigate.*guest"], "route": "/guest"},
+    "go_posture": {"patterns": ["go to posture", "open posture", "navigate.*posture"], "route": "/posture"},
+    "go_ai_agents": {"patterns": ["go to ai agent", "open ai agent", "navigate.*ai agent"], "route": "/ai/agents"},
+    "go_shadow": {"patterns": ["go to shadow", "open shadow", "navigate.*shadow"], "route": "/ai/shadow"},
+    "go_dataflow": {"patterns": ["go to data flow", "open data flow", "navigate.*data flow"], "route": "/ai/data-flow"},
+    "go_legacy_nac": {"patterns": ["go to legacy nac", "open legacy nac", "navigate.*legacy.nac", "go to legacy integration"], "route": "/legacy-nac"},
+    "go_audit": {"patterns": ["go to audit", "open audit", "navigate.*audit"], "route": "/audit"},
+    "go_diagnostics": {"patterns": ["go to diagnostic", "open diagnostic", "navigate.*diagnostic"], "route": "/diagnostics"},
+    "go_settings": {"patterns": ["go to setting", "open setting", "navigate.*setting"], "route": "/settings"},
+    "go_nodes": {"patterns": ["go to node", "open node", "navigate.*node"], "route": "/nodes"},
+    "go_topology": {"patterns": ["go to topology", "open topology", "navigate.*topology", "show.*map", "open.*map",
+                                   "network map", "go to.*architecture"], "route": "/topology"},
+    "go_sites": {"patterns": ["go to site", "open site", "navigate.*site", "site management"], "route": "/sites"},
+}

@@ -1,0 +1,78 @@
+global:
+  nodeId: twin-b
+  siteType: cloud
+  environment: production
+
+radiusServer:
+  replicaCount: 3
+  hostNetwork: false
+  resources:
+    requests: { cpu: 1000m, memory: 1Gi }
+    limits: { cpu: 4000m, memory: 4Gi }
+
+apiGateway:
+  replicaCount: 3
+
+aiEngine:
+  replicaCount: 2
+  resources:
+    requests: { cpu: 1000m, memory: 2Gi }
+    limits: { cpu: 4000m, memory: 8Gi }
+
+syncEngine:
+  peerAddress: "twin-a.onprem.neuranac.example.com:9090"
+
+postgresql:
+  enabled: false
+
+redis:
+  enabled: false
+
+nats:
+  enabled: true
+  jetstream:
+    fileStorage:
+      storageClassName: gp3
+
+externalPostgres:
+  host: neuranac-db.cluster-xxx.us-east-1.rds.amazonaws.com
+  port: 5432
+  database: neuranac
+  existingSecret: neuranac-rds-secret
+  sslMode: require
+
+externalRedis:
+  host: neuranac-cache.xxx.0001.use1.cache.amazonaws.com
+  port: 6379
+  existingSecret: neuranac-elasticache-secret
+
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:xxx:certificate/xxx
+  hosts:
+    - host: neuranac.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+          service: web
+        - path: /api
+          pathType: Prefix
+          service: api-gateway
+  tls:
+    - secretName: neuranac-cloud-tls
+      hosts: [neuranac.example.com]
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilization: 70
+
+metering:
+  enabled: true
+  payAsYouGo: true
+  billingInterval: hourly

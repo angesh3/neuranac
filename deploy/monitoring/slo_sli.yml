@@ -1,0 +1,112 @@
+# NeuraNAC Service Level Objectives (SLOs) and Service Level Indicators (SLIs)
+# These define the production reliability targets for GA.
+
+slos:
+  # ─── RADIUS Authentication ─────────────────────────────────────────
+  radius_auth_availability:
+    description: "RADIUS authentication service availability"
+    sli: "Percentage of time the RADIUS auth endpoint responds to requests"
+    target: 99.95%  # ~22 minutes downtime/month
+    measurement: "1 - (sum(rate(radius_auth_dropped_total[30d])) / sum(rate(radius_auth_requests_total[30d])))"
+    window: 30d
+    alerting_burn_rate:
+      - window: 1h
+        threshold: 14.4  # 2% budget consumed in 1h
+        severity: critical
+      - window: 6h
+        threshold: 6     # 5% budget consumed in 6h
+        severity: warning
+
+  radius_auth_latency:
+    description: "RADIUS authentication response time"
+    sli: "p99 latency of Access-Request to Access-Accept/Reject"
+    target: 99%  # 99% of requests under 500ms
+    threshold: 0.5  # seconds
+    measurement: "histogram_quantile(0.99, rate(radius_auth_duration_seconds_bucket[5m])) < 0.5"
+    window: 30d
+
+  radius_auth_success_rate:
+    description: "RADIUS authentication success rate (non-policy rejections)"
+    sli: "Percentage of auth requests that don't fail due to system errors"
+    target: 99.9%
+    measurement: "1 - (sum(rate(radius_policy_eval_errors_total[30d])) / sum(rate(radius_auth_requests_total[30d])))"
+    window: 30d
+
+  # ─── API Gateway ───────────────────────────────────────────────────
+  api_availability:
+    description: "API Gateway availability"
+    sli: "Percentage of non-5xx responses"
+    target: 99.9%  # ~43 minutes downtime/month
+    measurement: "1 - (sum(rate(http_requests_total{status=~'5..'}[30d])) / sum(rate(http_requests_total[30d])))"
+    window: 30d
+
+  api_latency:
+    description: "API response time"
+    sli: "p95 latency of API requests"
+    target: 95%  # 95% of requests under 1s
+    threshold: 1.0  # seconds
+    measurement: "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) < 1.0"
+    window: 30d
+
+  # ─── Data Plane ────────────────────────────────────────────────────
+  eap_session_completion:
+    description: "EAP session completion rate"
+    sli: "Percentage of started EAP sessions that complete (not timeout)"
+    target: 99%
+    measurement: "sum(rate(radius_eap_sessions_completed_total[30d])) / sum(rate(radius_eap_sessions_started_total[30d]))"
+    window: 30d
+
+  policy_eval_latency:
+    description: "Policy evaluation response time"
+    sli: "p99 latency of policy evaluation"
+    target: 99%
+    threshold: 0.1  # 100ms
+    measurement: "histogram_quantile(0.99, rate(radius_policy_eval_duration_seconds_bucket[5m])) < 0.1"
+    window: 30d
+
+  # ─── Infrastructure ────────────────────────────────────────────────
+  database_availability:
+    description: "PostgreSQL availability"
+    sli: "Database responds to health checks"
+    target: 99.99%
+    measurement: "avg_over_time(pg_up[30d])"
+    window: 30d
+
+  redis_availability:
+    description: "Redis availability"
+    sli: "Redis responds to PING"
+    target: 99.9%
+    measurement: "avg_over_time(up{job='redis'}[30d])"
+    window: 30d
+    degradation_impact: "Rate limiting and EAP session sharing disabled"
+
+  nats_availability:
+    description: "NATS messaging availability"
+    sli: "NATS cluster responds to health checks"
+    target: 99.9%
+    measurement: "avg_over_time(up{job='nats'}[30d])"
+    window: 30d
+    degradation_impact: "Event publishing and CoA disabled"
+
+# ─── Error Budget Policy ─────────────────────────────────────────────
+error_budget_policy:
+  description: "Actions taken when error budget is exhausted"
+  thresholds:
+    - remaining: 50%
+      action: "Review deployment pipeline for stability improvements"
+    - remaining: 25%
+      action: "Freeze non-critical changes, focus on reliability"
+    - remaining: 10%
+      action: "Incident response mode — all hands on reliability"
+    - remaining: 0%
+      action: "Full change freeze until budget recovers"
+
+# ─── Reporting ────────────────────────────────────────────────────────
+reporting:
+  frequency: weekly
+  recipients: ["platform-team@neuranac.local"]
+  dashboards:
+    - name: "NeuraNAC SLO Dashboard"
+      url: "http://grafana:3000/d/neuranac-slo"
+    - name: "Error Budget Burn Rate"
+      url: "http://grafana:3000/d/neuranac-burn-rate"

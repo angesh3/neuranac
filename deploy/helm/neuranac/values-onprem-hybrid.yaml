@@ -1,0 +1,23 @@
+# Scenario 1 & 4: On-prem site in hybrid mode (with or without NeuraNAC)
+# For NeuraNAC scenario 1: set legacyNacEnabled=true and configure neuranacBridge.adapters.legacy_nac
+# For no-NeuraNAC scenario 4: leave legacyNacEnabled=false
+global:
+  siteType: onprem
+  siteId: "00000000-0000-0000-0000-000000000001"
+  deploymentMode: hybrid
+  legacyNacEnabled: true  # set to false for scenario 4
+  peerApiUrl: "https://cloud-neuranac.example.com"
+  bridgeUrl: "http://neuranac-bridge:8090"
+
+syncEngine:
+  peerAddress: "cloud-sync.example.com:9090"
+
+neuranacBridge:
+  enabled: true
+  simulated: false
+  adapters:
+    legacy_nac:
+      enabled: true  # set to false for scenario 4
+      hostname: "legacy-nac.customer.local"
+    neuranacToNeuranac:
+      enabled: true
